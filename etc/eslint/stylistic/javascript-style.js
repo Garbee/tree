@@ -1,0 +1,176 @@
+export const javascriptStyle = {
+  'array-bracket-newline': [
+    'error',
+    {
+      multiline: true,
+      minItems: 3,
+    },
+  ],
+  'array-bracket-spacing': ['error', 'never'],
+  'array-element-newline': [
+    'error',
+    {
+      multiline: true,
+      minItems: 3,
+    },
+  ],
+  'arrow-parens': ['error', 'always'],
+  'arrow-spacing': [
+    'error',
+    {
+      before: true,
+      after: true,
+    },
+  ],
+  'block-spacing': ['error', 'always'],
+  'brace-style': ['error', '1tbs'],
+  'comma-dangle': ['error', 'always-multiline'],
+  'comma-spacing': [
+    'error',
+    {
+      before: false,
+      after: true,
+    },
+  ],
+  'comma-style': ['error', 'last'],
+  'computed-property-spacing': ['error', 'never'],
+  'dot-location': ['error', 'property'],
+  'eol-last': ['error', 'always'],
+  'function-call-argument-newline': ['error', 'consistent'],
+  'function-call-spacing': ['error', 'never'],
+  'function-paren-newline': ['error', 'consistent'],
+  'generator-star-spacing': ['error'],
+  'implicit-arrow-linebreak': ['error'],
+  'indent': ['error', 2],
+  'key-spacing': ['error'],
+  'keyword-spacing': ['error'],
+  'line-comment-position': ['error', 'above'],
+  'linebreak-style': ['error', 'unix'],
+  'lines-around-comment': [
+    'error',
+    {
+      beforeBlockComment: true,
+      afterBlockComment: false,
+      beforeLineComment: true,
+      afterLineComment: false,
+      allowBlockStart: true,
+      allowBlockEnd: true,
+      allowObjectStart: true,
+      allowObjectEnd: false,
+      allowArrayStart: true,
+      allowArrayEnd: false,
+      allowClassStart: true,
+      allowClassEnd: false,
+      applyDefaultIgnorePatterns: true,
+      afterHashbangComment: true,
+    },
+  ],
+  'lines-between-class-members': ['error', 'always'],
+  'max-len': [
+    'error',
+    {
+      code: 60,
+      tabWidth: 2,
+      ignoreComments: false,
+      ignoreTrailingComments: true,
+      ignoreUrls: true,
+      ignoreStrings: true,
+      ignoreTemplateLiterals: true,
+      ignoreRegExpLiterals: true,
+    },
+  ],
+  'max-statements-per-line': [
+    'error',
+    {
+      max: 1,
+    },
+  ],
+  'multiline-comment-style': ['error', 'starred-block'],
+  'multiline-ternary': ['error', 'always'],
+  'new-parens': ['error', 'always'],
+  'newline-per-chained-call': [
+    'error',
+    {
+      ignoreChainWithDepth: 2,
+    },
+  ],
+  'no-confusing-arrow': ['error'],
+  'no-extra-parens': ['error', 'all'],
+  'no-extra-semi': ['error'],
+  'no-floating-decimal': ['error'],
+  'no-mixed-operators': ['error'],
+  'no-mixed-spaces-and-tabs': ['error'],
+  'no-multi-spaces': ['error'],
+  'no-multiple-empty-lines': [
+    'error',
+    {
+      max: 1,
+    },
+  ],
+  'no-tabs': ['error'],
+  'no-trailing-spaces': ['error'],
+  'no-whitespace-before-property': ['error'],
+  'nonblock-statement-body-position': ['error'],
+  'object-curly-newline': [
+    'error',
+    {
+      consistent: true,
+    },
+  ],
+  'object-curly-spacing': ['error', 'never'],
+  'object-property-newline': [
+    'error',
+    {
+      allowAllPropertiesOnSameLine: false,
+    },
+  ],
+  'one-var-declaration-per-line': ['error'],
+  'operator-linebreak': ['error', 'after'],
+  'padded-blocks': ['error', 'never'],
+
+  // This one is complex, swing back to it later.
+  'padding-line-between-statements': ['off'],
+  'quote-props': ['error', 'consistent-as-needed'],
+  'quotes': [
+    'error',
+    'single',
+    {
+      avoidEscape: true,
+      allowTemplateLiterals: true,
+    },
+  ],
+  'rest-spread-spacing': ['error', 'never'],
+  'semi': ['error', 'always'],
+  'semi-spacing': [
+    'error',
+    {
+      before: false,
+      after: true,
+    },
+  ],
+  'semi-style': ['error', 'last'],
+  'space-before-blocks': ['error', 'always'],
+  'space-before-function-paren': ['error', 'never'],
+  'space-in-parens': ['error', 'never'],
+  'space-infix-ops': ['error'],
+  'space-unary-ops': ['error'],
+  'spaced-comment': ['error', 'always'],
+  'switch-colon-spacing': [
+    'error',
+    {
+      before: false,
+      after: true,
+    },
+  ],
+  'template-curly-spacing': ['error', 'never'],
+  'template-tag-spacing': ['error', 'never'],
+  'wrap-iife': ['error', 'outside'],
+  'wrap-regex': ['error'],
+  'yield-star-spacing': [
+    'error',
+    {
+      before: false,
+      after: true,
+    },
+  ],
+};
