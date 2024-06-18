@@ -1,7 +1,21 @@
 {
   "cSpell.words": [
+    "backreference",
+    "camelcase",
     "garbee",
-    "tseslint"
+    "Hashbang",
+    "iife",
+    "linebreak",
+    "litelement",
+    "nojekyll",
+    "nonblock",
+    "nonconstructor",
+    "nonoctal",
+    "plusplus",
+    "syntaxhighlight",
+    "tselint",
+    "tseslint",
+    "tydata"
   ],
   "eslint.codeActionsOnSave.mode": "problems",
   "eslint.problems.shortenToSingleLine": true,

@@ -1,5 +1,6 @@
 import stylisticJsPlugin from '@stylistic/eslint-plugin-js';
 import stylisticTsPlugin from '@stylistic/eslint-plugin-ts';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import packageJson from 'eslint-plugin-package-json/configs/recommended';
 import {possibleProblems} from './etc/eslint/rules/possible-problems.js';
@@ -41,6 +42,9 @@ export default [
     files: ['eslint.config.js', 'etc/**/*.js'],
     languageOptions: {
       ecmaVersion: 2024,
+      globals: {
+        ...globals.node,
+      },
     },
     plugins: {
       '@stylistic/js': stylisticJsPlugin,
@@ -59,6 +63,9 @@ export default [
     files: ['src/**/*.ts'],
     languageOptions: {
       ecmaVersion: 2024,
+      globals: {
+        ...globals.browser,
+      },
       parser: tseslint.parser,
       parserOptions: {
         project: true,

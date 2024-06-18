@@ -1,3 +1,8 @@
+custom-elements.json
+
+# Built doc site from 11ty for distribution.
+man/
+
 # Logs
 logs
 *.log
