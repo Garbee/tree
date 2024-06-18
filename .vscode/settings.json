@@ -1,0 +1,11 @@
+{
+  "cSpell.words": [
+    "garbee",
+    "tseslint"
+  ],
+  "eslint.codeActionsOnSave.mode": "problems",
+  "eslint.problems.shortenToSingleLine": true,
+  "eslint.run": "onSave",
+  "eslint.useESLintClass": true,
+  "eslint.useFlatConfig": true
+}
