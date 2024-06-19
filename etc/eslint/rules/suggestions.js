@@ -47,7 +47,7 @@ export const suggestions = {
   'dot-notation': ['error'],
   'eqeqeq': ['error', 'always'],
   'func-name-matching': ['error'],
-  'func-names': ['error', 'always'],
+  'func-names': ['error', 'as-needed'],
   'func-style': ['error', 'expression'],
   'grouped-accessor-pairs': ['error', 'setBeforeGet'],
   'guard-for-in': ['error'],

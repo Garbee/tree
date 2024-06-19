@@ -13,7 +13,7 @@ export default function (data) {
 
 const renderExample = ({name, content, collections, page}) => {
   return `
-    <h1>Example: ${name}</h1>
+    <h2>Example: ${name}</h2>
     <section class="examples">
       <nav class="collection">
         <ul>

@@ -57,7 +57,21 @@ export default [
       'id-length': ['off'],
     },
   },
-  packageJson,
+  {
+    ...packageJson,
+    rules: {
+      ...packageJson.rules,
+      'package-json/sort-collections': [
+        'error',
+        [
+          'devDependencies',
+          'dependencies',
+          'peerDependencies',
+          'config',
+        ],
+      ],
+    },
+  },
   {
     name: 'code',
     files: ['src/**/*.ts'],

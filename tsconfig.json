@@ -22,7 +22,7 @@
 
     /* Modules */
     "module": "Node16",
-    "rootDir": "./",
+    "rootDir": "src/",
     "moduleResolution": "Node16",
     "allowImportingTsExtensions": false,
     "resolvePackageJsonExports": true,

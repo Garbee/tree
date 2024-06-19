@@ -1,14 +1,17 @@
 import syntaxHighlightPlugin from '@11ty/eleventy-plugin-syntaxhighlight';
-import fs from 'fs';
+import {readFileSync} from 'fs';
 
 const customElements = JSON.parse(
-  fs.readFileSync('custom-elements.json', 'utf-8')
+  readFileSync('custom-elements.json', 'utf-8'),
 );
 
-export default function(eleventyConfig) {
+const eleventyConfigAdapter = function(eleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlightPlugin);
   eleventyConfig.addPassthroughCopy('docs/.nojekyll');
   eleventyConfig.addPassthroughCopy('docs/docs.css');
+  eleventyConfig.addPassthroughCopy({
+    'node_modules/prismjs/themes/prism-okaidia.css': 'prism-okaidia.css',
+  });
 
   eleventyConfig.addGlobalData('api', {
     customElements,
@@ -21,3 +24,5 @@ export default function(eleventyConfig) {
     },
   };
 };
+
+export default eleventyConfigAdapter;
