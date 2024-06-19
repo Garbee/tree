@@ -1,0 +1,21 @@
+
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Chrome against localhost",
+      "type": "chrome",
+      "runtimeExecutable": "canary",
+      "request": "launch",
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "npm: start"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run and Debug",
+      "configurations": ["Launch Chrome against localhost"]
+    }
+  ]
+}

@@ -88,6 +88,6 @@
 
     /* Completeness */
     "skipDefaultLibCheck": true,
-    "skipLibCheck": false
+    "skipLibCheck": true
   }
 }
