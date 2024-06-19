@@ -32,12 +32,13 @@
     "lint:lit-analyzer": "lit-analyzer",
     "serve": "wds --config=etc/web-dev-server/index.js --watch",
     "serve:test": "run-s -l clean build:bundle",
-    "start": "run-s -l clean build:bundle serve",
+    "start": "run-s -l clean docs:gen serve",
     "test": "npx playwright test",
     "pretest:server": "run-s serve:test",
     "test:server": "wds --config=etc/web-dev-server/test.js"
   },
   "dependencies": {
+    "@lit-labs/virtualizer": "^2.0.13",
     "lit": "^3.1.4"
   },
   "devDependencies": {
@@ -63,6 +64,7 @@
     "lit-analyzer": "^2.0.3",
     "npm-run-all": "^4.1.5",
     "rollup": "^4.18.0",
+    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-summary": "^2.0.1",
     "typescript": "^5.4.5",
     "typescript-eslint": "^8.0.0-alpha.30"

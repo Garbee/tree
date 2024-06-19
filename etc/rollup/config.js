@@ -7,11 +7,13 @@ export default {
   input: 'dist/src/tree.js',
   output: [
     {
-      file: 'garbee-tree.bundled.js',
+      file: 'man/garbee-tree.bundled.js',
+      inlineDynamicImports: true,
       format: 'esm',
     },
     {
       file: 'tests/srv/assets/garbee-tree.bundled.js',
+      inlineDynamicImports: true,
       format: 'esm',
     },
   ],

@@ -10,12 +10,11 @@ test('renders tree component', async ({ page }) => {
   await page.goto('/');
 
   const node = await page.$('garbee-tree');
-  const textContent = await node?.evaluate((shadowHost) => {
+  const virtualizerNode = await node?.evaluate((shadowHost) => {
     const {shadowRoot} = shadowHost;
 
-    const paragraph = shadowRoot?.querySelector('p');
-    return paragraph?.textContent?.trim();
+    return shadowRoot?.querySelector('lit-virtualizer');
   });
 
-  await expect(textContent).toEqual("I'll be a tree");
+  await expect(virtualizerNode).toBeDefined();
 });
