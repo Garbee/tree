@@ -16,7 +16,8 @@
     "analyze": "cem analyze --litelement --globs \"src/**/*.ts\"",
     "prebuild": "run-s clean:dist",
     "build": "tsc",
-    "build:bundle": "rollup --config etc/rollup/config.js --file man/garbee-tree.bundled.js",
+    "prebuild:bundle": "run-s build",
+    "build:bundle": "rollup --config etc/rollup/config.js",
     "build:bundle:watch": "run-s 'build:bundle -- --watch'",
     "build:watch": "tsc --watch",
     "clean": "run-p clean:*",
@@ -30,8 +31,11 @@
     "lint:eslint": "eslint",
     "lint:lit-analyzer": "lit-analyzer",
     "serve": "wds --config=etc/web-dev-server/index.js --watch",
-    "start": "run-s -l clean docs:gen serve",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve:test": "run-s -l clean build:bundle",
+    "start": "run-s -l clean build:bundle serve",
+    "test": "npx playwright test",
+    "pretest:server": "run-s serve:test",
+    "test:server": "wds --config=etc/web-dev-server/test.js"
   },
   "dependencies": {
     "lit": "^3.1.4"
@@ -41,12 +45,14 @@
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
     "@custom-elements-manifest/analyzer": "^0.10.2",
     "@eslint/js": "^9.5.0",
+    "@playwright/test": "^1.44.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-terser": "^0.4.4",
     "@stylistic/eslint-plugin-js": "^2.2.2",
     "@stylistic/eslint-plugin-ts": "^2.2.2",
     "@types/eslint__js": "^8.42.3",
+    "@types/node": "^20.14.5",
     "@typescript-eslint/parser": "^8.0.0-alpha.30",
     "@web/dev-server": "^0.4.5",
     "del-cli": "^5.1.0",

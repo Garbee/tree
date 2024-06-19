@@ -22,7 +22,7 @@
 
     /* Modules */
     "module": "Node16",
-    "rootDir": "src/",
+    "rootDir": "./",
     "moduleResolution": "Node16",
     "allowImportingTsExtensions": false,
     "resolvePackageJsonExports": true,
@@ -89,5 +89,10 @@
     /* Completeness */
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
-  }
+  },
+  "exclude": [
+    "playwright.config.ts",
+    "tests/",
+    "dist/"
+  ]
 }

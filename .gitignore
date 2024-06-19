@@ -2,6 +2,8 @@ custom-elements.json
 
 # Built doc site from 11ty for distribution.
 man/
+# Built assets for testing
+tests/srv/assets/*
 
 # Logs
 logs
@@ -314,3 +316,7 @@ tags
 
 *.patch
 *.diff
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
