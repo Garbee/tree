@@ -49,15 +49,16 @@ export const suggestions = {
   'func-name-matching': ['error'],
   'func-names': ['error', 'as-needed'],
   'func-style': ['error', 'expression'],
-  'grouped-accessor-pairs': ['error', 'setBeforeGet'],
+  'grouped-accessor-pairs': ['error', 'getBeforeSet'],
   'guard-for-in': ['error'],
   'id-denylist': ['off'],
   'id-length': [
     'error',
     {
       min: 3,
-      max: 20,
+      max: 25,
       properties: 'always',
+      exceptions: ['id'],
     },
   ],
   'id-match': ['off'],

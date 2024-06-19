@@ -12,7 +12,9 @@
     "nonconstructor",
     "nonoctal",
     "plusplus",
+    "preact",
     "syntaxhighlight",
+    "treeitem",
     "tselint",
     "tseslint",
     "tydata"
