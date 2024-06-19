@@ -11,13 +11,16 @@ import {
   property,
 } from 'lit/decorators.js';
 import '@lit-labs/virtualizer';
+import type {TreeItem} from './item/TreeItem.js';
 
 @customElement('garbee-tree')
-class TreeElement extends LitElement {
+class TreeElement<TreeItemType = unknown>
+  extends LitElement {
   @property({
     attribute: false,
   })
-  public renderItem?: RenderItemFunction;
+  public renderItem?: RenderItemFunction<
+    TreeItem<TreeItemType>>;
 
   protected override render(): TemplateResult {
     return html`

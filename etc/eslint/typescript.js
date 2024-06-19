@@ -140,7 +140,16 @@ const typescriptRules = {
    * Deprecated, eslint upstream fully supported now.
    */
   'no-loss-of-precision': ['off'],
-  'no-magic-numbers': ['error'],
+  'no-magic-numbers': [
+    'error',
+    {
+      ignore: [
+        -1,
+        0,
+        1,
+      ],
+    },
+  ],
   'no-meaningless-void-operator': ['error'],
   'no-misused-new': ['error'],
   'no-misused-promises': ['error'],
@@ -223,7 +232,7 @@ const typescriptRules = {
   'prefer-optional-chain': ['error'],
   'prefer-promise-reject-errors': ['error'],
   'prefer-readonly': ['error'],
-  'prefer-readonly-parameter-types': ['error'],
+  'prefer-readonly-parameter-types': ['off'],
   'prefer-reduce-type-parameter': ['error'],
   'prefer-regexp-exec': ['error'],
   'prefer-return-this-type': ['error'],

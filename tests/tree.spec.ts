@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('has tree component', async ({ page }) => {
   await page.goto('/');
 
-  await expect(await page.$('garbee-tree')).toBeDefined();
+  expect(await page.$('garbee-tree')).toBeDefined();
 });
 
 test('renders tree component', async ({ page }) => {
@@ -16,5 +16,5 @@ test('renders tree component', async ({ page }) => {
     return shadowRoot?.querySelector('lit-virtualizer');
   });
 
-  await expect(virtualizerNode).toBeDefined();
+  expect(virtualizerNode).toBeDefined();
 });

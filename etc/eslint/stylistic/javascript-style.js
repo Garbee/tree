@@ -71,7 +71,7 @@ export const javascriptStyle = {
     {
       code: 60,
       tabWidth: 2,
-      ignoreComments: false,
+      ignoreComments: true,
       ignoreTrailingComments: true,
       ignoreUrls: true,
       ignoreStrings: true,
