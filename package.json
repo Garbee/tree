@@ -79,7 +79,6 @@
     "@playwright/test": "^1.44.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.7",
-    "@rollup/plugin-terser": "^0.4.4",
     "@stylistic/eslint-plugin-js": "^2.2.2",
     "@stylistic/eslint-plugin-ts": "^2.2.2",
     "@types/eslint__js": "^8.42.3",
