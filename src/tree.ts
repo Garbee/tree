@@ -1,3 +1,10 @@
+import type {TreeItem} from '@garbee/tree/tree-item.js';
+import {
+  type Signal,
+  computed,
+  signal,
+  SignalWatcher as signalWatcher,
+} from '@lit-labs/preact-signals';
 import type {
   RenderItemFunction,
 } from '@lit-labs/virtualizer/virtualize.js';
@@ -11,13 +18,6 @@ import {
   property,
 } from 'lit/decorators.js';
 import '@lit-labs/virtualizer';
-import type {TreeItem} from './item/TreeItem.js';
-import {
-  type Signal,
-  computed,
-  signal,
-  SignalWatcher as signalWatcher,
-} from '@lit-labs/preact-signals';
 
 @customElement('garbee-tree')
 class TreeElement<TreeItemType = unknown>

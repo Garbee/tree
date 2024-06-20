@@ -1,4 +1,4 @@
-import {TreeItem} from '../item/TreeItem.js';
+import {TreeItem} from '@garbee/tree/tree-item.js';
 
 interface CanHaveChildren<T = unknown> {
   children?: Array<T>;

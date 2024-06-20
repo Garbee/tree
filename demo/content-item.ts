@@ -8,8 +8,8 @@ import {
 } from "lit/decorators.js";
 import type {
   CanHaveChildren,
-} from "../src/functions/flatten.js";
-import { TreeItemElement } from "../src/item/TreeItemElement.js";
+} from "@garbee/tree/functions/flatten.js";
+import { TreeItemElement } from "@garbee/tree/tree-item-element.js";
 
 interface Content extends CanHaveChildren<Content> {
   type: 'file' | 'directory';

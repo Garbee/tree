@@ -8,10 +8,39 @@
     "tree",
     "web-components"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/garbee/tree"
+  },
   "license": "MIT",
   "author": "Jonathan Garbee <jonathan@garbee.me>",
   "type": "module",
-  "main": "index.js",
+  "exports": {
+    "./tree.js": {
+      "types": "./dist/src/tree.d.ts",
+      "default": "./dist/src/tree.js"
+    },
+    "./tree-item.js": {
+      "types": "./dist/src/item/TreeItem.d.ts",
+      "default": "./dist/src/item/TreeItem.js"
+    },
+    "./tree-item-element.js": {
+      "types": "./dist/src/item/TreeItemElement.d.ts",
+      "default": "./dist/src/item/TreeItemElement.js"
+    },
+    "./functions/flatten.js": {
+      "types": "./dist/src/functions/flatten.d.ts",
+      "default": "./dist/src/functions/flatten.js"
+    }
+  },
+  "files": [
+    "dist/src/",
+    "custom-elements.json",
+    "package.json",
+    "package-lock.json",
+    "readme.md",
+    "man/"
+  ],
   "scripts": {
     "analyze": "cem analyze --litelement --globs \"src/**/*.ts\"",
     "prebuild": "run-s clean:dist",
@@ -74,5 +103,6 @@
   },
   "engines": {
     "node": ">=20.14.0"
-  }
+  },
+  "customElements": "custom-elements.json"
 }

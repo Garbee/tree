@@ -1,12 +1,12 @@
+import type {
+  TreeItem,
+} from '@garbee/tree/tree-item.js';
 import {
   LitElement,
 } from 'lit';
 import {
   property,
 } from 'lit/decorators.js';
-import type {
-  TreeItem,
-} from './TreeItem.js';
 import {
   SignalWatcher as signalWatcher,
   effect,
