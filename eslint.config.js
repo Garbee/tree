@@ -38,6 +38,13 @@ const tsStyleRules = {
 
 export default [
   {
+    ignores: [
+      'dist/**/*',
+      'man/**/*',
+      'test-results/**/*',
+    ],
+  },
+  {
     name: 'configs',
     files: ['eslint.config.js', 'etc/**/*.js'],
     languageOptions: {

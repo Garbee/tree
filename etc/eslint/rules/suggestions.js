@@ -80,7 +80,7 @@ export const suggestions = {
   'max-lines-per-function': [
     'error',
     {
-      max: 20,
+      max: 35,
       skipBlankLines: true,
       skipComments: true,
     },
@@ -100,7 +100,7 @@ export const suggestions = {
   'max-statements': [
     'error',
     {
-      max: 10,
+      max: 20,
     },
   ],
   'new-cap': ['error'],

@@ -3,7 +3,7 @@ import {
   expect,
 } from '@playwright/test';
 import {flatten} from '../../src/functions/flatten.js';
-import {directoryStructure} from './data/sample-directory.js';
+import {directoryStructure} from '../../data/sample-directory.js';
 
 test.describe('flatten', () => {
   test('it returns an empty array when an empty array is provided', () => {

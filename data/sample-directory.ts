@@ -1,4 +1,4 @@
-import type {CanHaveChildren} from '../../../src/functions/flatten.js';
+import type {CanHaveChildren} from '../src/functions/flatten.js';
 
 interface Content extends CanHaveChildren<Content> {
   type: 'file' | 'directory';
