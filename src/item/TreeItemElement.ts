@@ -13,25 +13,47 @@ import {
 } from '@lit-labs/preact-signals';
 
 /**
- * @tag abstract-tree-item
+ * An abstract element class that represents an individual
+ * item within the tree. This is the class developers
+ * should extend in order to create an element to show
+ * the item to a user.
+ *
+ * This will set the <code>role</code> to
+ * <code>treeitem</code> automatically. As well as
+ * maintaining all needed exposure to assistive
+ * technology as the TreeItem's signals change.
  */
 abstract class TreeItemElement<DataType = unknown>
   extends signalWatcher(LitElement) {
+  /**
+   * The provided tree item that is represented by the
+   * element.
+   */
   #treeItem?: TreeItem<DataType>;
 
-  #data?: DataType;
-
+  /**
+   * The effect disposal function from observing signal
+   * changes. Used to clean up listening when the element
+   * is removed from the DOM.
+   */
   #treeItemEffectDisposal:
     ReturnType<typeof effect> | undefined = undefined;
 
+  /**
+   * Retrieve the data that this tree item represents.
+   */
   public get data(): DataType | undefined {
-    return this.#data;
+    return this.#treeItem?.data;
   }
 
   public get treeItem(): TreeItem<DataType> | undefined {
     return this.#treeItem;
   }
 
+  /**
+   * The TreeItem that this element represents when
+   * rendered.
+   */
   @property({attribute: false})
   public set treeItem(item: TreeItem<DataType>) {
     if (this.#treeItemEffectDisposal) {
@@ -40,7 +62,6 @@ abstract class TreeItemElement<DataType = unknown>
     }
 
     this.#treeItem = item;
-    this.#data = item.data;
 
     this.#treeItemEffectDisposal = effect(
       this.#treeItemEffectCallback,
@@ -70,6 +91,11 @@ abstract class TreeItemElement<DataType = unknown>
     }
   }
 
+  /**
+   * The callback used to listen to signal changes to
+   * the TreeItem content. This updates the element
+   * with the current state of the signal data.
+   */
   /* eslint max-statements:['error', {max: 11}] */
   readonly #treeItemEffectCallback = (): void => {
     if (this.#treeItem === undefined) {

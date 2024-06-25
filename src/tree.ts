@@ -19,20 +19,48 @@ import {
 } from 'lit/decorators.js';
 import '@lit-labs/virtualizer';
 
+/**
+ * The TreeElement is what renders and manages the tree
+ * itself. Roving focus of tree items as well as all
+ * interaction with the elements. The individual rendering
+ * is delegated to a provided <code>renderItem</code> method
+ * which renders an element that extends the TreeItemElement
+ * class.
+ *
+ * @part virtualizer - Applies styles to the
+ * lit-virtualizer. Primarily used to adjust the height and
+ * width of the scrollable area.
+ */
 @customElement('garbee-tree')
 class TreeElement<TreeItemType = unknown>
   extends signalWatcher(LitElement) {
+  /**
+   * Determines if extra logging and performance marks
+   * are enabled while operating.
+   */
   public static debugMode = false;
 
+  /**
+   * The function passed to <code>lit-virtualizer</code>
+   * that is used to render each individual item.
+   */
   @property({
     attribute: false,
   })
   public renderItem?: RenderItemFunction<
     TreeItem<TreeItemType>>;
 
+  /**
+   * The total available content that could be rendered.
+   */
   readonly #content: Signal<
     Array<TreeItem<TreeItemType>>> = signal([]);
 
+  /**
+   * The subset of #content that is currently visible to
+   * the user. All root items are always visible. Then any
+   * children of parents that are expanded are visible.
+   */
   readonly #visibleContent = computed(() => {
     const start = 'TreeElement: Calculating visible content';
     const end = 'TreeElement: Calculated visible content';
