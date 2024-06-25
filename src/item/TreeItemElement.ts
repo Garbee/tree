@@ -17,19 +17,10 @@ import {
  */
 abstract class TreeItemElement<DataType = unknown>
   extends signalWatcher(LitElement) {
-  /**
-   * @internal
-   */
   #treeItem?: TreeItem<DataType>;
 
-  /**
-   * @internal
-   */
   #data?: DataType;
 
-  /**
-   * @internal
-   */
   #treeItemEffectDisposal:
     ReturnType<typeof effect> | undefined = undefined;
 
@@ -80,9 +71,6 @@ abstract class TreeItemElement<DataType = unknown>
   }
 
   /* eslint max-statements:['error', {max: 11}] */
-  /**
-   * @internal
-   */
   readonly #treeItemEffectCallback = (): void => {
     if (this.#treeItem === undefined) {
       return;

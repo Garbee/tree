@@ -30,15 +30,9 @@ class TreeElement<TreeItemType = unknown>
   public renderItem?: RenderItemFunction<
     TreeItem<TreeItemType>>;
 
-  /**
-   * @internal
-   */
   readonly #content: Signal<
     Array<TreeItem<TreeItemType>>> = signal([]);
 
-  /**
-   * @internal
-   */
   readonly #visibleContent = computed(() => {
     const start = 'TreeElement: Calculating visible content';
     const end = 'TreeElement: Calculated visible content';
@@ -81,6 +75,11 @@ class TreeElement<TreeItemType = unknown>
     return this.#content.value;
   }
 
+  /**
+   * Provide the data that the tree represents. Setting this
+   * will override any currently set data. It is a
+   * replace operation, not append.
+   */
   @property({attribute: false})
   public set content(data: Array<TreeItem<TreeItemType>>) {
     this.#content.value = [...data];
