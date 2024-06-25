@@ -62,6 +62,7 @@ export default [
       ...jsStyleRules,
       'no-magic-numbers': ['off'],
       'id-length': ['off'],
+      'max-lines': ['off'],
     },
   },
   {

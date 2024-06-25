@@ -35,8 +35,13 @@ export const possibleProblems = {
   'no-dupe-else-if': ['error'],
   'no-dupe-keys': ['error'],
   'no-duplicate-case': ['error'],
+
+  /**
+   * This should be on, but doesn't allow a type import
+   * and a bare import for side-effects.
+   */
   'no-duplicate-imports': [
-    'error',
+    'off',
     {
       includeExports: true,
     },
@@ -70,7 +75,14 @@ export const possibleProblems = {
   'no-unsafe-finally': ['error'],
   'no-unsafe-negation': ['error'],
   'no-unsafe-optional-chaining': ['error'],
-  'no-unused-private-class-members': ['error'],
+
+  /**
+   * This should be on, but with signals we store effect
+   * callbacks in private props that may never get called.
+   * So off for now until a better way to handle those is
+   * found.
+   */
+  'no-unused-private-class-members': ['off'],
   'no-unused-vars': ['error'],
   'no-use-before-define': ['error'],
   'no-useless-assignment': ['error'],

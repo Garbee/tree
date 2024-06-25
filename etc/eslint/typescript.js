@@ -88,7 +88,7 @@ const typescriptRules = {
       max: 3,
     },
   ],
-  'member-ordering': ['error'],
+  'member-ordering': ['off'],
   'method-signature-style': ['error', 'property'],
 
   /**
