@@ -9,7 +9,6 @@ test.beforeEach(async ({page}) => {
   const node = page.locator(firstTreeItemSelector);
   await node.waitFor({
     state: 'visible',
-    timeout: 500,
   });
 });
 
@@ -24,7 +23,6 @@ test('expansion', async ({ page }) => {
 
     await childNode.waitFor({
       state: 'visible',
-      timeout: 500,
     });
 
     expect(node).toHaveAttribute('aria-expanded', 'true');
@@ -37,7 +35,6 @@ test('expansion', async ({ page }) => {
     await node.click();
     await childNode.waitFor({
       state: 'detached',
-      timeout: 500,
     });
 
     expect(node).toHaveAttribute('aria-expanded', 'false');

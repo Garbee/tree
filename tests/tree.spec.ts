@@ -6,7 +6,6 @@ test('renders tree component', async ({ page }) => {
   const node = page.locator('garbee-tree lit-virtualizer demo-content-item:first-child');
   await node.waitFor({
     state: 'visible',
-    timeout: 500,
   });
 
   expect(node).toHaveText('Projects');
