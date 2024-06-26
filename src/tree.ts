@@ -79,6 +79,12 @@ class TreeElement<TreeItemType = unknown>
   }
 
   /**
+   * Internal state to determine if a click event is being
+   * processed still.
+   */
+  #isHandlingClickEvent = false;
+
+  /**
    * The current start and end index of visible items
    * rendered in view for a user.
    *
@@ -227,6 +233,10 @@ class TreeElement<TreeItemType = unknown>
   readonly #ensureTreeItemIsFocusable = effect(() => {
     const visibleItems = this.#visibleItems.value;
 
+    if (this.#isHandlingClickEvent) {
+      return;
+    }
+
     if (visibleItems.find((item) => {
       return item.tabIndex.value === 0;
     })) {
@@ -237,6 +247,43 @@ class TreeElement<TreeItemType = unknown>
       visibleItems.at(0)?.identifier,
     );
   });
+
+  /**
+   * Handle click events from tree items.
+   */
+  readonly #clickHandler = (
+    event: MouseEvent,
+  ): void => {
+    this.#isHandlingClickEvent = true;
+    const start = 'TreeElement: Handling click event';
+    const end = 'TreeElement: Handled click event';
+    const measureName = 'TreeElement: Click event handle';
+
+    if (TreeElement.debugMode) {
+      performance.mark(start);
+    }
+
+    const {target} = event;
+
+    const {id} = target as HTMLElement;
+
+    this.#roveFocusTo(id);
+    this.#selectItem(id);
+    this.#toggleExpansion(id);
+    this.#isHandlingClickEvent = false;
+
+    if (TreeElement.debugMode) {
+      performance.mark(end);
+      performance.measure(
+        measureName,
+        {
+          detail: {},
+          start,
+          end,
+        },
+      );
+    }
+  };
 
   private constructor() {
     super();
@@ -294,13 +341,60 @@ class TreeElement<TreeItemType = unknown>
     }
   }
 
+  /**
+   * Toggle the expansion state of the specified tree item
+   * by it's identifier.
+   */
+  #toggleExpansion(id: string): void {
+    const item = this.#content.value.find((contentItem) => {
+      return contentItem.identifier === id;
+    });
+
+    if (!item) {
+      return;
+    }
+
+    item.toggleExpansion();
+  }
+
+  /**
+   * Toggle the selection of the tree item by it's
+   * identifier. Remove previous selection if it is different
+   * than the current target item.
+   */
+  #selectItem(id: string): void {
+    const item = this.#content.value.find((contentItem) => {
+      return contentItem.identifier === id;
+    });
+
+    if (!item) {
+      return;
+    }
+
+    batch(() => {
+      const currentItem = this.#content
+        .value
+        .find((contentItem) => {
+          return contentItem.selected.value;
+        });
+
+      if (item.identifier !== currentItem?.identifier) {
+        currentItem?.deselect();
+      }
+
+      item.toggleSelection();
+    });
+  }
+
   protected override render(): TemplateResult {
     return html`
       <lit-virtualizer
-        part="virtualizer"
+        scroller
         .items=${this.#visibleContent.value}
         .renderItem="${this.renderItem}"
         @visibilityChanged="${this.#visibilityChanged}"
+        @click="${this.#clickHandler}"
+        part="virtualizer"
         role="tree"
         aria-multiselectable="false"
       ></lit-virtualizer>

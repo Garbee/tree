@@ -23,5 +23,6 @@
   "eslint.problems.shortenToSingleLine": true,
   "eslint.run": "onSave",
   "eslint.useESLintClass": true,
-  "eslint.useFlatConfig": true
+  "eslint.useFlatConfig": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
