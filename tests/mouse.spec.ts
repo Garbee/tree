@@ -14,7 +14,7 @@ test.beforeEach(async ({page}) => {
 
 test('expansion', async ({ page }) => {
   const node = page.locator(firstTreeItemSelector);
-  const childNode = page.locator('garbee-tree lit-virtualizer demo-content-item:nth-child(4)');
+  const childNode = page.locator('garbee-tree lit-virtualizer [role="treeitem"]:nth-child(4)');
 
   await test.step('opens a closed node on click', async () => {
     expect(node).toHaveAttribute('aria-expanded', 'false');
@@ -98,5 +98,20 @@ test('tabindex moves with click', async ({page}) => {
 
     expect(childNode).toHaveAttribute('tabindex', '0');
     expect(firstItemNode).toHaveAttribute('tabindex', '-1');
+
+    const treeItemNodes = await page.locator(treeItemSelector).all();
+    const treeItems = {
+      '0': [],
+      '-1': [],
+    };
+
+    for (const item of treeItemNodes) {
+      const tabIndex = (await item.getAttribute('tabindex') as string);
+
+      treeItems[tabIndex].push(item);
+    }
+
+    expect(treeItems['0'].length).toEqual(1);
+    expect(treeItems['-1'].length).toBeGreaterThan(3);
   });
 });
