@@ -28,3 +28,9 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 7
+    - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v.4.3.3
+      if: always()
+      with:
+        name: test-srv
+        path: tests/srv/
+        retention-days: 7
