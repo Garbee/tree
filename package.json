@@ -62,7 +62,7 @@
     "start": "run-s -l clean docs:gen serve",
     "pretest": "run-s -l build:test",
     "test": "playwright test",
-    "test:copy:build": "cp -R dist tests/srv/assets/ && mkdir -p tests/srv/assets/node_modules/lit && cp -R node_modules/lit/ tests/srv/assets/node_modules/lit",
+    "test:copy:build": "cpy dist tests/srv/assets/ && cpy node_modules/lit/ tests/srv/assets/node_modules/lit",
     "pretest:server": "run-s -l build:test",
     "test:server": "wds --config=etc/web-dev-server/test.js"
   },
@@ -84,6 +84,7 @@
     "@types/sinon": "^17.0.3",
     "@typescript-eslint/parser": "^8.0.0-alpha.30",
     "@web/dev-server": "^0.4.5",
+    "cpy-cli": "^5.0.0",
     "del-cli": "^5.1.0",
     "eslint": "^9.5.0",
     "eslint-plugin-package-json": "^0.15.0",

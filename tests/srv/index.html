@@ -9,26 +9,6 @@
   <body>
     <garbee-tree></garbee-tree>
 
-    <script type="module">
-      const {TreeElement} = await import('/assets/dist/src/tree.js');
-      const {directoryStructure} = await import('/assets/dist/data/sample-directory.js');
-      const {flatten} = await import('/assets/dist/src/functions/flatten.js');
-      const {ContentItem} = await import('/assets/dist/demo/content-item.js');
-      const {html} = await import('/assets/node_modules/lit/html.js');
-      const treeNode = document.querySelector('garbee-tree');
-
-      TreeElement.debugMode = true;
-
-      treeNode.debugMode = true;
-      treeNode.renderItem = (data) => {
-        return html`
-          <demo-content-item
-            .treeItem="${data}"
-          ></demo-content-item>
-        `;
-      };
-
-      treeNode.content = flatten(directoryStructure);
-    </script>
+    <script type="module" src="/demo.js"></script>
   </body>
 </html>
