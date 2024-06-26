@@ -51,7 +51,7 @@
     "clean:cem": "del custom-elements.json",
     "clean:dist": "del dist",
     "clean:docs": "del man",
-    "clean:test": "del tests/srv/assets/dist",
+    "clean:test": "del tests/srv/assets/",
     "predocs:gen": "run-s clean:docs analyze build",
     "docs:gen": "eleventy --config=etc/eleventy/config.js",
     "docs:gen:watch": "eleventy --config=etc/eleventy/config.js --watch",
@@ -62,7 +62,7 @@
     "start": "run-s -l clean docs:gen serve",
     "pretest": "run-s -l build:test",
     "test": "playwright test",
-    "test:copy:build": "cpy dist tests/srv/assets/ && cpy node_modules/lit/ tests/srv/assets/",
+    "test:copy:build": "cpy dist tests/srv/assets/",
     "pretest:server": "run-s -l build:test",
     "test:server": "wds --config=etc/web-dev-server/test.js"
   },

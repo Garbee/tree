@@ -3,7 +3,7 @@ import {TreeElement} from '/assets/dist/src/tree.js';
 import {directoryStructure} from '/assets/dist/data/sample-directory.js';
 import {flatten} from '/assets/dist/src/functions/flatten.js';
 import {ContentItem} from '/assets/dist/demo/content-item.js';
-import {html} from '/assets/node_modules/lit/html.js';
+import {html} from '../../node_modules/lit/html.js';
 
 const treeNode = document.querySelector('garbee-tree');
 
