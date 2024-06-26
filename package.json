@@ -57,6 +57,7 @@
     "docs:gen:watch": "eleventy --config=etc/eleventy/config.js --watch",
     "lint:eslint": "eslint",
     "lint:lit-analyzer": "lit-analyzer",
+    "lint:lockfile": "lockfile-lint --path=package-lock.json --type npm --validate-https --allowed-hosts=npm --empty-hostname=false --validate-integrity",
     "serve": "wds --config=etc/web-dev-server/index.js --watch",
     "serve:test": "run-s -l clean",
     "start": "run-s -l clean docs:gen serve",
@@ -64,7 +65,8 @@
     "test": "playwright test",
     "test:copy:build": "cpy dist tests/srv/assets/",
     "pretest:server": "run-s -l build:test",
-    "test:server": "wds --config=etc/web-dev-server/test.js"
+    "test:server": "wds --config=etc/web-dev-server/test.js",
+    "prepare": "husky"
   },
   "dependencies": {
     "@lit-labs/preact-signals": "^1.0.2",
@@ -89,8 +91,11 @@
     "eslint": "^9.5.0",
     "eslint-plugin-package-json": "^0.15.0",
     "globals": "^15.6.0",
+    "husky": "^9.0.11",
     "jsonc-eslint-parser": "^2.4.0",
+    "lint-staged": "^15.2.7",
     "lit-analyzer": "^2.0.3",
+    "lockfile-lint": "^4.14.0",
     "npm-run-all": "^4.1.5",
     "sinon": "^18.0.0",
     "typescript": "^5.5.2",
