@@ -42,6 +42,7 @@ export default [
       'dist/**/*',
       'man/**/*',
       'test-results/**/*',
+      'tests/srv/assets/**/*',
     ],
   },
   {

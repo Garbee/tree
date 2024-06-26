@@ -4,9 +4,31 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test the Tree</title>
-    <script type="module" src="/assets/garbee-tree.bundled.js"></script>
+    <script type="module" src="/assets/dist/src/tree.js"></script>
   </head>
   <body>
     <garbee-tree></garbee-tree>
+
+    <script type="module">
+      const {TreeElement} = await import('/assets/dist/src/tree.js');
+      const {directoryStructure} = await import('/assets/dist/data/sample-directory.js');
+      const {flatten} = await import('/assets/dist/src/functions/flatten.js');
+      const {ContentItem} = await import('/assets/dist/demo/content-item.js');
+      const {html} = await import('/assets/node_modules/lit/html.js');
+      const treeNode = document.querySelector('garbee-tree');
+
+      TreeElement.debugMode = true;
+
+      treeNode.debugMode = true;
+      treeNode.renderItem = (data) => {
+        return html`
+          <demo-content-item
+            .treeItem="${data}"
+          ></demo-content-item>
+        `;
+      };
+
+      treeNode.content = flatten(directoryStructure);
+    </script>
   </body>
 </html>

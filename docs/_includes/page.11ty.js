@@ -14,10 +14,6 @@ export default function (data) {
     <title>${title}</title>
     <link rel="stylesheet" href="${relative(page.url, '/docs.css')}" />
     <link href="${relative(page.url, '/prism-okaidia.css')}" rel="stylesheet" />
-    <script type="module" src="${relative(
-      page.url,
-      '/garbee-tree.bundled.js'
-    )}"></script>
   </head>
   <body>
     ${header()}
