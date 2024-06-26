@@ -62,7 +62,7 @@
     "start": "run-s -l clean docs:gen serve",
     "pretest": "run-s -l build:test",
     "test": "playwright test",
-    "test:copy:build": "cpy dist tests/srv/assets/ && cpy node_modules/lit/ tests/srv/assets/node_modules/lit",
+    "test:copy:build": "cpy dist tests/srv/assets/ && cpy node_modules/lit/ tests/srv/assets/",
     "pretest:server": "run-s -l build:test",
     "test:server": "wds --config=etc/web-dev-server/test.js"
   },
