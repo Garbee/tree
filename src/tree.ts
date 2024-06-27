@@ -2,6 +2,9 @@ import type {
   TreeItem,
 } from '@garbee/tree/tree-item.js';
 import {
+  ItemSelectionEvent,
+} from '@garbee/tree/events/item-selection.js';
+import {
   type Signal,
   computed,
   signal,
@@ -419,16 +422,12 @@ class TreeElement<TreeItemType = unknown>
 
   readonly #fireSelectedEvent = effect(() => {
     const selectedItems = this.#selectedItems.value;
-    const event = new CustomEvent('tree-item-selected', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        selectedItems,
-      },
-    });
+    const selectionEvent = new ItemSelectionEvent(
+      selectedItems,
+    );
 
     void this.updateComplete.then(() => {
-      this.dispatchEvent(event);
+      this.dispatchEvent(selectionEvent);
     });
   });
 

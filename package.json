@@ -28,6 +28,10 @@
       "types": "./dist/src/item/TreeItemElement.d.ts",
       "default": "./dist/src/item/TreeItemElement.js"
     },
+    "./events/item-selection.js": {
+      "types": "./dist/src/events/item-selection.d.ts",
+      "default": "./dist/src/events/item-selection.js"
+    },
     "./functions/flatten.js": {
       "types": "./dist/src/functions/flatten.d.ts",
       "default": "./dist/src/functions/flatten.js"

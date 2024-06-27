@@ -2,7 +2,9 @@ import {
   test,
   expect,
 } from '@playwright/test';
-import type {TreeElement} from '@garbee/tree/tree.js';
+import type {
+  TreeElement,
+} from '@garbee/tree/tree.js';
 
 const treeItemSelector = 'garbee-tree lit-virtualizer [role="treeitem"]';
 const firstTreeItemSelector = `${treeItemSelector}:first-child`;
@@ -22,22 +24,15 @@ test('fires when an item is selected', async({page}) => {
 
   const customEventPromise = page.evaluate(async() => {
     return new Promise((resolve) => {
-      // @ts-expect-error Have not yet typed the event.
-      document.addEventListener('tree-item-selected', (event: CustomEvent) => {
-        resolve(event.detail);
+      document.addEventListener('garbee-tree-item-selection-changed', (event) => {
+        resolve(event.selectedItems);
       });
     });
   });
 
   await firstItem.press('Enter');
 
-  const eventDetail: {
-    selectedItems: Array<unknown>;
-  } = await customEventPromise as {
-    selectedItems: Array<unknown>;
-  };
-
-  expect(eventDetail.selectedItems).toHaveLength(1);
+  expect(await customEventPromise).toHaveLength(1);
 });
 
 test('fires when an item is deselected', async({page}) => {
@@ -47,22 +42,15 @@ test('fires when an item is deselected', async({page}) => {
 
   const customEventPromise = page.evaluate(async() => {
     return new Promise((resolve) => {
-      // @ts-expect-error Have not yet typed the event.
-      document.addEventListener('tree-item-selected', (event: CustomEvent) => {
-        resolve(event.detail);
+      document.addEventListener('garbee-tree-item-selection-changed', (event) => {
+        resolve(event.selectedItems);
       });
     });
   });
 
   await firstItem.press('Enter');
 
-  const eventDetail: {
-    selectedItems: Array<unknown>;
-  } = await customEventPromise as {
-    selectedItems: Array<unknown>;
-  };
-
-  expect(eventDetail.selectedItems).toHaveLength(0);
+  expect(await customEventPromise).toHaveLength(0);
 });
 
 test('fires when multiple items are selected', async({page}) => {
@@ -84,9 +72,8 @@ test('fires when multiple items are selected', async({page}) => {
 
   const customEventPromise = page.evaluate(async() => {
     return new Promise((resolve) => {
-      // @ts-expect-error Have not yet typed the event.
-      document.addEventListener('tree-item-selected', (event: CustomEvent) => {
-        resolve(event.detail);
+      document.addEventListener('garbee-tree-item-selection-changed', (event) => {
+        resolve(event.selectedItems);
       });
     });
   });
@@ -94,11 +81,5 @@ test('fires when multiple items are selected', async({page}) => {
   await firstItem.press('End');
   await lastItem.press('Enter');
 
-  const eventDetail: {
-    selectedItems: Array<unknown>;
-  } = await customEventPromise as {
-    selectedItems: Array<unknown>;
-  };
-
-  expect(eventDetail.selectedItems).toHaveLength(2);
+  expect(await customEventPromise).toHaveLength(2);
 });
