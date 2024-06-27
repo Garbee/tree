@@ -92,6 +92,11 @@ class TreeElement<TreeItemType = unknown>
     this.#content.value = [...data];
   }
 
+  @property({
+    type: Boolean,
+  })
+  public multiple = false;
+
   @query('[role="treeitem"][tabindex]:not([tabindex="-1"])')
   public currentFocusableItemNode!: HTMLElement | null;
 
@@ -822,14 +827,16 @@ class TreeElement<TreeItemType = unknown>
     }
 
     batch(() => {
-      const currentItem = this.#content
-        .value
-        .find((contentItem) => {
-          return contentItem.selected.value;
-        });
+      if (!this.multiple) {
+        const currentItem = this.#content
+          .value
+          .find((contentItem) => {
+            return contentItem.selected.value;
+          });
 
-      if (item.identifier !== currentItem?.identifier) {
-        currentItem?.deselect();
+        if (item.identifier !== currentItem?.identifier) {
+          currentItem?.deselect();
+        }
       }
 
       item.toggleSelection();
@@ -848,7 +855,7 @@ class TreeElement<TreeItemType = unknown>
         @keydown="${this.#keyDownHandler}"
         part="virtualizer"
         role="tree"
-        aria-multiselectable="false"
+        aria-multiselectable="${this.multiple}"
       ></lit-virtualizer>
     `;
   }
