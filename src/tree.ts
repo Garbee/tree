@@ -47,6 +47,10 @@ import '@lit-labs/virtualizer';
  * @part virtualizer - Applies styles to the
  * lit-virtualizer. Primarily used to adjust the height and
  * width of the scrollable area.
+ *
+ * @fires {CustomEvent} tree-item-selected - When item
+ * selection changes happen. Details contains selectedItems
+ * as an array of the current values.
  */
 @customElement('garbee-tree')
 class TreeElement<TreeItemType = unknown>
@@ -375,6 +379,53 @@ class TreeElement<TreeItemType = unknown>
       }
     },
   );
+
+  readonly #selectedItems = computed(() => {
+    const start = 'TreeElement: Finding the currently selected items';
+    const end = 'TreeElement: Found currently selected items';
+    const measureName = 'TreeElement: Time to find currently selected items';
+
+    if (TreeElement.debugMode) {
+      performance.mark(start);
+    }
+
+    const content = this.#content.value;
+    const current = content.filter((item) => {
+      return item.selected.value;
+    });
+
+    if (TreeElement.debugMode) {
+      performance.mark(end);
+      performance.measure(
+        measureName,
+        {
+          detail: {
+            currentSelectedLength: current.length,
+            contentLength: content.length,
+          },
+          start,
+          end,
+        },
+      );
+    }
+
+    return current;
+  });
+
+  readonly #fireSelectedEvent = effect(() => {
+    const selectedItems = this.#selectedItems.value;
+    const event = new CustomEvent('tree-item-selected', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        selectedItems,
+      },
+    });
+
+    void this.updateComplete.then(() => {
+      this.dispatchEvent(event);
+    });
+  });
 
   readonly #visibilityChanged = (
     event: VisibilityChangedEvent,

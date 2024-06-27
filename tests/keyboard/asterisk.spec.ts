@@ -26,19 +26,21 @@ test('it expands each item at the current level', async({page}) => {
   await firstItem.focus();
   await firstItem.press('*');
 
-  const currItems = await treeNode.evaluate((
+  const currItems = treeNode.evaluate((
     tree: TreeElement,
   ) => {
-    return tree.content;
-  });
+    return tree.content.map((item) => {
+      return [item.level, item.expanded.value];
+    });
+  }, undefined, {timeout: 1500});
 
-  for (const item of currItems) {
-    if (item.level === 1) {
-      expect(item.expanded.value).toBe(true);
+  for (const [level, expanded] of await currItems) {
+    if (level === 1) {
+      expect(expanded).toBe(true);
       continue;
     }
 
-    expect(item.expanded.value).toBeFalsy();
+    expect(expanded).toBeFalsy();
   }
 
   await expect(firstItem).toBeFocused();
