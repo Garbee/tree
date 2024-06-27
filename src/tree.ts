@@ -328,6 +328,54 @@ class TreeElement<TreeItemType = unknown>
     }
   });
 
+  /**
+   * Find the first child
+   */
+  readonly #firstChildOfFocusableItem = computed(
+    () => {
+      const start = 'TreeElement: Calculating first child of current focusable item';
+      const end = 'TreeElement: Calculated first child of current focusable item';
+      const measureName = 'TreeElement: First child of current focusable item calculation';
+
+      if (TreeElement.debugMode) {
+        performance.mark(start);
+      }
+
+      const content = this.#content.value;
+      const currentItem = this.#currentFocusableItem.value;
+      let item: TreeItem<TreeItemType> | undefined;
+
+      try {
+        if (currentItem?.hasChildren === false) {
+          return;
+        }
+
+        item = content.find((contentItem) => {
+          return contentItem.parent?.identifier ===
+          currentItem?.identifier;
+        });
+
+        return item;
+      } finally {
+        if (TreeElement.debugMode) {
+          performance.mark(end);
+          performance.measure(
+            measureName,
+            {
+              detail: {
+                contentLength: content.length,
+                currentId: currentItem?.identifier,
+                firstChildId: item?.identifier,
+              },
+              start,
+              end,
+            },
+          );
+        }
+      }
+    },
+  );
+
   readonly #visibilityChanged = (
     event: VisibilityChangedEvent,
   ): void => {
@@ -437,6 +485,7 @@ class TreeElement<TreeItemType = unknown>
         break;
       case 'ArrowRight':
         event.preventDefault();
+        await this.#handleArrowRight();
         break;
       case 'Home':
         event.preventDefault();
@@ -617,6 +666,47 @@ class TreeElement<TreeItemType = unknown>
     this.#roveFocusTo(nextItem.identifier);
 
     await this.updateComplete;
+
+    this.currentFocusableItemNode?.focus();
+  }
+
+  /**
+   * When focus is on a closed node, opens the node; focus does not move.
+   * When focus is on a open node, moves focus to the first child node.
+   * When focus is on an end node, does nothing.
+   */
+  async #handleArrowRight(): Promise<void> {
+    const current = this.#currentFocusableItem.value;
+
+    if (!current) {
+      return;
+    }
+
+    if (current.expanded.value === undefined) {
+      return;
+    }
+
+    if (!current.expanded.value) {
+      current.expand();
+      return;
+    }
+
+    const first = this.#firstChildOfFocusableItem
+      .value;
+
+    if (first === undefined) {
+      return;
+    }
+
+    current.disableFocus();
+    first.enableFocus();
+
+    await this.updateComplete;
+
+    this.#virtualizerRef.value?.scrollToIndex(
+      this.#visibleContent.value.indexOf(first),
+      'nearest',
+    );
 
     this.currentFocusableItemNode?.focus();
   }

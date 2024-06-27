@@ -143,7 +143,7 @@ export default [
       'max-lines-per-function': [
         'error',
         {
-          max: 70,
+          max: 75,
         },
       ],
     },
