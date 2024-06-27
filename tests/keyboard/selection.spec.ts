@@ -5,7 +5,7 @@ const notSelectedItemSelector = 'garbee-tree lit-virtualizer [role="treeitem"][a
 const selectedItemSelector = 'garbee-tree lit-virtualizer [role="treeitem"][aria-selected="true"]:first-child';
 const firstTreeItemSelector = `${treeItemSelector}:first-child`;
 
-test.beforeEach(async ({page}) => {
+test.beforeEach(async({page}) => {
   await page.goto('/');
 
   const node = page.locator(firstTreeItemSelector);
@@ -22,7 +22,9 @@ test.describe('Enter', () => {
     await expect(node).toHaveAttribute('aria-selected', 'false');
 
     await node.press('Enter');
-    await page.locator(selectedItemSelector).waitFor({timeout: 500});
+    await page.locator(selectedItemSelector).waitFor({
+      timeout: 500,
+    });
 
     await expect(node).toHaveAttribute('aria-selected', 'true');
   });
@@ -33,13 +35,16 @@ test.describe('Enter', () => {
     await expect(node).toHaveAttribute('aria-selected', 'false');
 
     await node.press('Enter');
-    await page.locator(selectedItemSelector).waitFor({timeout: 500});
-
+    await page.locator(selectedItemSelector).waitFor({
+      timeout: 500,
+    });
 
     await expect(node).toHaveAttribute('aria-selected', 'true');
 
     await node.press('Enter');
-    await page.locator(notSelectedItemSelector).waitFor({timeout: 500});
+    await page.locator(notSelectedItemSelector).waitFor({
+      timeout: 500,
+    });
 
     await expect(node).toHaveAttribute('aria-selected', 'false');
   });
@@ -52,8 +57,9 @@ test.describe('Space', () => {
     await expect(node).toHaveAttribute('aria-selected', 'false');
 
     await node.press(' ');
-    await page.locator(selectedItemSelector).waitFor({timeout: 500});
-
+    await page.locator(selectedItemSelector).waitFor({
+      timeout: 500,
+    });
 
     await expect(node).toHaveAttribute('aria-selected', 'true');
   });
@@ -64,14 +70,16 @@ test.describe('Space', () => {
     await expect(node).toHaveAttribute('aria-selected', 'false');
 
     await node.press(' ');
-    await page.locator(selectedItemSelector).waitFor({timeout: 500});
-
+    await page.locator(selectedItemSelector).waitFor({
+      timeout: 500,
+    });
 
     await expect(node).toHaveAttribute('aria-selected', 'true');
 
     await node.press(' ');
-    await page.locator(notSelectedItemSelector).waitFor({timeout: 500});
-
+    await page.locator(notSelectedItemSelector).waitFor({
+      timeout: 500,
+    });
 
     await expect(node).toHaveAttribute('aria-selected', 'false');
   });

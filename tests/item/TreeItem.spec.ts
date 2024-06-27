@@ -10,10 +10,10 @@ import sinon from 'sinon';
 
 interface TestTreeItemData {
   name: string;
-};
+}
 
 const treeItemData = {
-  name: 'Test Item'
+  name: 'Test Item',
 };
 
 const treeMetadata: TreeItemMetadata = {
@@ -23,14 +23,16 @@ const treeMetadata: TreeItemMetadata = {
   hasChildren: false,
 };
 
-const makeItem = function(identifier?: string): TreeItem<TestTreeItemData> {
+const makeItem = function(
+  identifier?: string,
+): TreeItem<TestTreeItemData> {
   return new TreeItem<TestTreeItemData>(
     treeItemData,
     treeMetadata,
     undefined,
     identifier,
   );
-}
+};
 
 test.describe('TreeItem', () => {
   test('can be made with a custom identifier', () => {
@@ -206,14 +208,19 @@ test.describe('TreeItem', () => {
   });
 
   test.describe('logs an error when given invalid identifiers', () => {
+    let consoleErrorStub: sinon.SinonStub<[
+      message?: unknown,
+      ...optionalParams: Array<unknown>,
+    ], void>;
+
     test.beforeEach(() => {
-      global.consoleErrorStub = sinon.stub(console, 'error').callsFake((...args) => {
+      consoleErrorStub = sinon.stub(console, 'error').callsFake((...args) => {
         throw new Error(`console.error was called with arguments: ${args.join(' ')}`);
-    });
+      });
     });
 
     test.afterEach(() => {
-      global.consoleErrorStub.restore();
+      consoleErrorStub.restore();
     });
 
     test('starts with a number', () => {

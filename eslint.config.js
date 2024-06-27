@@ -83,7 +83,7 @@ export default [
   },
   {
     name: 'code',
-    files: ['src/**/*.ts'],
+    files: ['src/**/*.ts', 'tests/**/*.ts'],
     languageOptions: {
       ecmaVersion: 2024,
       globals: {
@@ -109,6 +109,21 @@ export default [
     },
   },
   {
+    name: 'Tests',
+    files: ['tests/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-magic-numbers': ['off'],
+      'max-lines-per-function': ['off'],
+      'no-await-in-loop': ['off'],
+      'max-nested-callbacks': [
+        'error',
+        {
+          max: 5,
+        },
+      ],
+    },
+  },
+  {
     /**
      * The tree is the powerhouse component. There is a lot
      * of code to make it work to manage everything. So,
@@ -127,7 +142,7 @@ export default [
       'max-lines-per-function': [
         'error',
         {
-          max: 65,
+          max: 70,
         },
       ],
     },
