@@ -482,6 +482,7 @@ class TreeElement<TreeItemType = unknown>
         break;
       case 'ArrowLeft':
         event.preventDefault();
+        await this.#handleArrowLeft();
         break;
       case 'ArrowRight':
         event.preventDefault();
@@ -707,6 +708,34 @@ class TreeElement<TreeItemType = unknown>
       this.#visibleContent.value.indexOf(first),
       'nearest',
     );
+
+    this.currentFocusableItemNode?.focus();
+  }
+
+  /**
+   * When focus is on an open node, closes the node.
+   * When focus is on a child node that is also either an end node or a closed node, moves focus to its parent node.
+   * When focus is on a root node that is also either an end node or a closed node, does nothing.
+   */
+  async #handleArrowLeft(): Promise<void> {
+    const current = this.#currentFocusableItem.value;
+
+    if (!current) {
+      return;
+    }
+
+    if (current.expanded.value === true) {
+      current.collapse();
+      return;
+    }
+
+    if (current.parent === undefined) {
+      return;
+    }
+
+    this.#roveFocusTo(current.parent.identifier);
+
+    await this.updateComplete;
 
     this.currentFocusableItemNode?.focus();
   }
