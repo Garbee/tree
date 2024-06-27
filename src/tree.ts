@@ -243,6 +243,55 @@ class TreeElement<TreeItemType = unknown>
     return current;
   });
 
+  /**
+   * Determine the previous item to the currently focusable
+   * item.
+   */
+  readonly #previousItem = computed(() => {
+    const start = 'TreeElement: Calculating previous item of current focusable item';
+    const end = 'TreeElement: Calculated previous item of current focusable item';
+    const measureName = 'TreeElement: Previous item of current focusable item calculation';
+
+    if (TreeElement.debugMode) {
+      performance.mark(start);
+    }
+
+    let current: TreeItem<TreeItemType> | undefined;
+    let previousItem: TreeItem<TreeItemType> | undefined;
+
+    try {
+      current = this.#currentFocusableItem.value;
+
+      if (current === undefined) {
+        return undefined;
+      }
+
+      const visibleContent = this.#visibleContent.value;
+      const currentIndex = visibleContent.indexOf(current);
+      previousItem = visibleContent[currentIndex - 1];
+
+      return previousItem;
+    } finally {
+      if (TreeElement.debugMode) {
+        performance.mark(end);
+        performance.measure(
+          measureName,
+          {
+            detail: {
+              currentId: current?.identifier,
+              previousItemId: previousItem?.identifier,
+            },
+            start,
+            end,
+          },
+        );
+      }
+    }
+  });
+
+  /**
+   * Determine the next item to the current focusable item.
+   */
   readonly #nextItem = computed(() => {
     const start = 'TreeElement: Calculating next item of current focusable item';
     const end = 'TreeElement: Calculated next item of current focusable item';
@@ -377,6 +426,7 @@ class TreeElement<TreeItemType = unknown>
         break;
       case 'ArrowUp':
         event.preventDefault();
+        await this.#moveFocusToPreviousNode();
         break;
       case 'ArrowDown':
         event.preventDefault();
@@ -531,6 +581,25 @@ class TreeElement<TreeItemType = unknown>
 
       item.expand();
     }
+  }
+
+  /**
+   * Moves focus to the previous node that is focusable
+   * without opening or closing a node. If focus is on first
+   * node, do nothing
+   */
+  async #moveFocusToPreviousNode(): Promise<void> {
+    const previousItem = this.#previousItem.value;
+
+    if (!previousItem) {
+      return;
+    }
+
+    this.#roveFocusTo(previousItem.identifier);
+
+    await this.updateComplete;
+
+    this.currentFocusableItemNode?.focus();
   }
 
   /**
