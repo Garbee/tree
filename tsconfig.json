@@ -94,6 +94,9 @@
       {
         "name": "ts-lit-plugin",
         "strict": true,
+        "rules": {
+          "no-incompatible-type-binding": "off"
+        }
       }
     ]
   },

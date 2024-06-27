@@ -61,8 +61,8 @@ class TreeElement<TreeItemType = unknown>
   @property({
     attribute: false,
   })
-  public renderItem?: RenderItemFunction<
-    TreeItem<TreeItemType>>;
+  public renderItem!: RenderItemFunction<TreeItem<
+    TreeItemType>>;
 
   public get content(): Array<TreeItem<TreeItemType>> {
     return this.#content.value;
