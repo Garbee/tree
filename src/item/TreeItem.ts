@@ -117,10 +117,6 @@ class TreeItem<DataType = unknown> {
    * not expanded, it is hidden.
    */
   public get isVisible(): boolean {
-    if (this.level === 1) {
-      return true;
-    }
-
     let {parent} = this;
 
     while (parent) {

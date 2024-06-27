@@ -1,4 +1,6 @@
-import type {TreeItem} from '@garbee/tree/tree-item.js';
+import type {
+  TreeItem,
+} from '@garbee/tree/tree-item.js';
 import {
   type Signal,
   computed,
@@ -8,6 +10,7 @@ import {
   batch,
 } from '@lit-labs/preact-signals';
 import type {
+  LitVirtualizer,
   VisibilityChangedEvent,
 } from '@lit-labs/virtualizer';
 import type {
@@ -22,7 +25,15 @@ import {
 import {
   customElement,
   property,
+  query,
 } from 'lit/decorators.js';
+import {
+  createRef,
+  ref,
+} from 'lit/directives/ref.js';
+import {
+  findVisibleItems,
+} from './functions/find-visible-items.js';
 import '@lit-labs/virtualizer';
 
 /**
@@ -77,6 +88,9 @@ class TreeElement<TreeItemType = unknown>
     this.#content.value = [...data];
   }
 
+  @query('[role="treeitem"][tabindex]:not([tabindex="-1"])')
+  public currentFocusableItemNode!: HTMLElement | null;
+
   /**
    * Internal state to determine if a click event is being
    * processed still.
@@ -107,6 +121,13 @@ class TreeElement<TreeItemType = unknown>
     Array<TreeItem<TreeItemType>>> = signal([]);
 
   /**
+   * Store a reference to the virtualizer node so it's API
+   * can be accessed.
+   */
+  readonly #virtualizerRef = createRef
+  <LitVirtualizer<TreeItem<TreeItemType>>>();
+
+  /**
    * The subset of #content that is currently visible to
    * the user. All root items are always visible. Then any
    * children of parents that are expanded are visible.
@@ -120,17 +141,15 @@ class TreeElement<TreeItemType = unknown>
       performance.mark(start);
     }
 
-    const content = this.#content.value;
-    const visibleItems = content.filter((item) => {
-      return item.isVisible;
-    });
+    const {
+      visibleItems,
+      contentLength,
+      visibleItemsLength,
+      difference,
+    } = findVisibleItems(this.#content.value);
 
     if (TreeElement.debugMode) {
       performance.mark(end);
-
-      const contentLength = content.length;
-      const visibleItemsLength = visibleItems.length;
-      const difference = contentLength - visibleItemsLength;
 
       performance.measure(
         measureName,
@@ -293,9 +312,9 @@ class TreeElement<TreeItemType = unknown>
     }
   };
 
-  readonly #keyDownHandler = (
+  readonly #keyDownHandler = async(
     event: KeyboardEvent,
-  ): void => {
+  ): Promise<void> => {
     if (this.#isHandlingKeydown) {
       return;
     }
@@ -337,6 +356,7 @@ class TreeElement<TreeItemType = unknown>
         break;
       case 'End':
         event.preventDefault();
+        await this.#moveFocusToEnd();
         break;
       case '*':
         event.preventDefault();
@@ -415,6 +435,26 @@ class TreeElement<TreeItemType = unknown>
   }
 
   /**
+   * Moves focus to the last node that can be focused
+   * without expanding any nodes that are closed.
+   */
+  async #moveFocusToEnd(): Promise<void> {
+    const last = this.#visibleContent
+      .value
+      .at(-1) as TreeItem<TreeItemType>;
+
+    this.#roveFocusTo(last.identifier);
+    await this.updateComplete;
+
+    this.#virtualizerRef.value?.scrollToIndex(
+      this.#visibleContent.value.indexOf(last),
+      'nearest',
+    );
+
+    this.currentFocusableItemNode?.focus();
+  }
+
+  /**
    * Toggle the expansion state of the specified tree item
    * by it's identifier.
    */
@@ -462,6 +502,7 @@ class TreeElement<TreeItemType = unknown>
   protected override render(): TemplateResult {
     return html`
       <lit-virtualizer
+      ${ref(this.#virtualizerRef)}
         scroller
         .items=${this.#visibleContent.value}
         .renderItem="${this.renderItem}"
