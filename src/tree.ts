@@ -361,6 +361,7 @@ class TreeElement<TreeItemType = unknown>
         break;
       case '*':
         event.preventDefault();
+        this.#expandSiblingsOfFocused();
         break;
       default:
         break;
@@ -473,6 +474,26 @@ class TreeElement<TreeItemType = unknown>
     );
 
     this.currentFocusableItemNode?.focus();
+  }
+
+  /**
+   * Expands all closed sibling nodes that are at the same
+   * level as the focused node. Focus does not move.
+   */
+  #expandSiblingsOfFocused(): void {
+    const current = this.#currentFocusableItem.value;
+
+    if (!current) {
+      return;
+    }
+
+    for (const item of this.#visibleContent.value) {
+      if (item.level !== current.level) {
+        continue;
+      }
+
+      item.expand();
+    }
   }
 
   /**
