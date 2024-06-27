@@ -109,10 +109,27 @@ export default [
     },
   },
   {
-    name: 'Known long files',
+    /**
+     * The tree is the powerhouse component. There is a lot
+     * of code to make it work to manage everything. So,
+     * some specific overrides are necessary.
+     */
+    name: 'Tree specific overrides',
     files: ['src/tree.ts'],
     rules: {
       'max-lines': ['off'],
+      'complexity': [
+        'error',
+        {
+          max: 15,
+        },
+      ],
+      'max-lines-per-function': [
+        'error',
+        {
+          max: 65,
+        },
+      ],
     },
   },
 ];

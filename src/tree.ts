@@ -81,7 +81,13 @@ class TreeElement<TreeItemType = unknown>
    * Internal state to determine if a click event is being
    * processed still.
    */
-  #isHandlingClickEvent = false;
+  #isHandlingClick = false;
+
+  /**
+   * Internal state to determine if a keydown event is being
+   * processed still.
+   */
+  #isHandlingKeydown = false;
 
   /**
    * The current start and end index of visible items
@@ -232,7 +238,10 @@ class TreeElement<TreeItemType = unknown>
   readonly #ensureTreeItemIsFocusable = effect(() => {
     const visibleItems = this.#visibleItems.value;
 
-    if (this.#isHandlingClickEvent) {
+    if (
+      this.#isHandlingClick ||
+      this.#isHandlingKeydown
+    ) {
       return;
     }
 
@@ -253,7 +262,7 @@ class TreeElement<TreeItemType = unknown>
   readonly #clickHandler = (
     event: MouseEvent,
   ): void => {
-    this.#isHandlingClickEvent = true;
+    this.#isHandlingClick = true;
     const start = 'TreeElement: Handling click event';
     const end = 'TreeElement: Handled click event';
     const measureName = 'TreeElement: Click event handle';
@@ -269,7 +278,7 @@ class TreeElement<TreeItemType = unknown>
     this.#roveFocusTo(id);
     this.#selectItem(id);
     this.#toggleExpansion(id);
-    this.#isHandlingClickEvent = false;
+    this.#isHandlingClick = false;
 
     if (TreeElement.debugMode) {
       performance.mark(end);
@@ -277,6 +286,72 @@ class TreeElement<TreeItemType = unknown>
         measureName,
         {
           detail: {},
+          start,
+          end,
+        },
+      );
+    }
+  };
+
+  readonly #keyDownHandler = (
+    event: KeyboardEvent,
+  ): void => {
+    if (this.#isHandlingKeydown) {
+      return;
+    }
+
+    this.#isHandlingKeydown = true;
+
+    const start = 'TreeElement: Handling keydown event';
+    const end = 'TreeElement: Handled keydown event';
+    const measureName = 'TreeElement: Keydown event handle';
+
+    if (TreeElement.debugMode) {
+      performance.mark(start);
+    }
+
+    const {target} = event;
+
+    const {id} = target as HTMLElement;
+
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        this.#selectItem(id);
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        break;
+      case 'ArrowDown':
+        event.preventDefault();
+        break;
+      case 'ArrowLeft':
+        event.preventDefault();
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        break;
+      case 'Home':
+        event.preventDefault();
+        break;
+      case 'End':
+        event.preventDefault();
+        break;
+      case '*':
+        event.preventDefault();
+        break;
+      default:
+        break;
+    }
+
+    this.#isHandlingKeydown = false;
+
+    if (TreeElement.debugMode) {
+      performance.mark(end);
+      performance.measure(
+        measureName,
+        {
           start,
           end,
         },
@@ -292,7 +367,6 @@ class TreeElement<TreeItemType = unknown>
    * Move focus from the current item in the DOM to the
    * target item.
    */
-  /* eslint max-lines-per-function: ['error', {max: 50}] */
   #roveFocusTo(identifier?: string): void {
     const start = 'TreeElement: Roving focus';
     const end = 'TreeElement: Roved focus';
@@ -393,6 +467,7 @@ class TreeElement<TreeItemType = unknown>
         .renderItem="${this.renderItem}"
         @visibilityChanged="${this.#visibilityChanged}"
         @click="${this.#clickHandler}"
+        @keydown="${this.#keyDownHandler}"
         part="virtualizer"
         role="tree"
         aria-multiselectable="false"
