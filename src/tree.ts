@@ -353,6 +353,7 @@ class TreeElement<TreeItemType = unknown>
         break;
       case 'Home':
         event.preventDefault();
+        await this.#moveFocusToStart();
         break;
       case 'End':
         event.preventDefault();
@@ -432,6 +433,26 @@ class TreeElement<TreeItemType = unknown>
         },
       );
     }
+  }
+
+  /**
+   * Moves focus to first node without opening or closing a node.
+   */
+  async #moveFocusToStart(): Promise<void> {
+    const first = this.#visibleContent
+      .value
+      .at(0) as TreeItem<TreeItemType>;
+
+    this.#roveFocusTo(first.identifier);
+
+    await this.updateComplete;
+
+    this.#virtualizerRef.value?.scrollToIndex(
+      this.#visibleContent.value.indexOf(first),
+      'nearest',
+    );
+
+    this.currentFocusableItemNode?.focus();
   }
 
   /**
