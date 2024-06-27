@@ -146,7 +146,7 @@ class TreeElement<TreeItemType = unknown>
       contentLength,
       visibleItemsLength,
       difference,
-    } = findVisibleItems(this.#content.value);
+    } = findVisibleItems<TreeItemType>(this.#content.value);
 
     if (TreeElement.debugMode) {
       performance.mark(end);
@@ -241,6 +241,42 @@ class TreeElement<TreeItemType = unknown>
     }
 
     return current;
+  });
+
+  readonly #nextItem = computed(() => {
+    const start = 'TreeElement: Calculating next item of current focusable item';
+    const end = 'TreeElement: Calculated next item of current focusable item';
+    const measureName = 'TreeElement: Next item of current focusable item calculation';
+
+    if (TreeElement.debugMode) {
+      performance.mark(start);
+    }
+
+    try {
+      const current = this.#currentFocusableItem.value;
+
+      if (current === undefined) {
+        return undefined;
+      }
+
+      const currentIndex = this.#visibleContent
+        .value
+        .indexOf(current);
+      return this.#visibleContent
+        .value
+        .at(currentIndex + 1);
+    } finally {
+      if (TreeElement.debugMode) {
+        performance.mark(end);
+        performance.measure(
+          measureName,
+          {
+            start,
+            end,
+          },
+        );
+      }
+    }
   });
 
   readonly #visibilityChanged = (
@@ -344,6 +380,7 @@ class TreeElement<TreeItemType = unknown>
         break;
       case 'ArrowDown':
         event.preventDefault();
+        await this.#moveFocusToNextNode();
         break;
       case 'ArrowLeft':
         event.preventDefault();
@@ -442,7 +479,7 @@ class TreeElement<TreeItemType = unknown>
   async #moveFocusToStart(): Promise<void> {
     const first = this.#visibleContent
       .value
-      .at(0) as TreeItem<TreeItemType>;
+      .at(0)!;
 
     this.#roveFocusTo(first.identifier);
 
@@ -463,7 +500,7 @@ class TreeElement<TreeItemType = unknown>
   async #moveFocusToEnd(): Promise<void> {
     const last = this.#visibleContent
       .value
-      .at(-1) as TreeItem<TreeItemType>;
+      .at(-1)!;
 
     this.#roveFocusTo(last.identifier);
     await this.updateComplete;
@@ -494,6 +531,25 @@ class TreeElement<TreeItemType = unknown>
 
       item.expand();
     }
+  }
+
+  /**
+   * Moves focus to the next node that is focusable
+   * without opening or closing a node. If focus is on last
+   * node, do nothing
+   */
+  async #moveFocusToNextNode(): Promise<void> {
+    const nextItem = this.#nextItem.value;
+
+    if (!nextItem) {
+      return;
+    }
+
+    this.#roveFocusTo(nextItem.identifier);
+
+    await this.updateComplete;
+
+    this.currentFocusableItemNode?.focus();
   }
 
   /**

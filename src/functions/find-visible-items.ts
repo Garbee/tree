@@ -15,7 +15,7 @@ const checkItemVisibility = function(
 
 const findVisibleItems = function<Type = unknown>(
   content: Array<TreeItem<Type>>,
-): FoundVisibleItems {
+): FoundVisibleItems<Type> {
   const visibleItems = content.filter(checkItemVisibility);
 
   return {

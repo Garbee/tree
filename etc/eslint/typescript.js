@@ -157,7 +157,7 @@ const typescriptRules = {
   'no-namespace': ['error'],
   'no-non-null-asserted-nullish-coalescing': ['error'],
   'no-non-null-asserted-optional-chain': ['error'],
-  'no-non-null-assertion': ['error'],
+  'no-non-null-assertion': ['off'],
 
   /**
    * Checked by Typescript now.

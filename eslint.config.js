@@ -113,6 +113,7 @@ export default [
     files: ['tests/**/*.ts'],
     rules: {
       '@typescript-eslint/no-magic-numbers': ['off'],
+      '@typescript-eslint/no-unsafe-assignment': ['off'],
       'max-lines-per-function': ['off'],
       'no-await-in-loop': ['off'],
       'max-nested-callbacks': [
