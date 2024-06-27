@@ -108,4 +108,11 @@ export default [
       ...tsStyleRules,
     },
   },
+  {
+    name: 'Known long files',
+    files: ['src/tree.ts'],
+    rules: {
+      'max-lines': ['off'],
+    },
+  },
 ];

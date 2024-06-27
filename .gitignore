@@ -1,4 +1,5 @@
 custom-elements.json
+eslint-results.sarif
 
 # Built doc site from 11ty for distribution.
 man/

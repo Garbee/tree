@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import type {TreeItem} from '@garbee/tree/tree-item.js';
 import {
   type Signal,
