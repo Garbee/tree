@@ -51,9 +51,8 @@ import '@lit-labs/virtualizer';
  * lit-virtualizer. Primarily used to adjust the height and
  * width of the scrollable area.
  *
- * @fires {CustomEvent} tree-item-selected - When item
- * selection changes happen. Details contains selectedItems
- * as an array of the current values.
+ * @fires {ItemSelectionEvent} garbee-tree-item-selection-changed -
+ * When item selection changes happen.
  */
 @customElement('garbee-tree')
 class TreeElement<TreeItemType = unknown>
@@ -95,6 +94,11 @@ class TreeElement<TreeItemType = unknown>
     this.#content.value = [...data];
   }
 
+  /**
+   * Enable selecting more than one item when set to `true`.
+   * Otherwise only a single tree item can be selected at a
+   * time.
+   */
   @property({
     type: Boolean,
   })

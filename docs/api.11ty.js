@@ -19,12 +19,20 @@ export default class Docs {
         ),
       []
     );
+    const events = manifest.modules.reduce(
+      (els, module) =>
+        els.concat(
+          module.declarations?.filter((dec) => dec.superclass?.name === 'Event') ?? []
+        ),
+      []
+    );
     return `
     <h1>API</h1>
+    <h2>Elements</h2>
     ${elements
       .map(
         (element) => `
-      <h2>${element.name}</h2>
+      <h3>${element.name}</h3>
       <div>
         &lt;${element.tagName}>
       </div>
@@ -79,6 +87,18 @@ export default class Docs {
       `
       )
       .join('')}
+    <h2>Events</h2>
+    ${events.map((event) => {
+      return `
+      <h3>${event.name}</h3>
+      <p>${event.description}</p>
+      ${renderTable(
+        'Properties',
+        ['name', 'description', 'type.text'],
+        event.members.filter((m) => m.kind === 'field' && m.privacy !== 'private' && m.static !== true),
+      )}
+      `;
+    }).join('')}
   `;
   }
 };

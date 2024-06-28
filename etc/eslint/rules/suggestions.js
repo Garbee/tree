@@ -48,7 +48,15 @@ export const suggestions = {
   'eqeqeq': ['error', 'always'],
   'func-name-matching': ['error'],
   'func-names': ['error', 'as-needed'],
-  'func-style': ['error', 'expression'],
+  'func-style': [
+    'error',
+    'expression',
+    {
+      overrides: {
+        namedExports: 'declaration',
+      },
+    },
+  ],
   'grouped-accessor-pairs': ['error', 'getBeforeSet'],
   'guard-for-in': ['error'],
   'id-denylist': ['off'],
