@@ -6,7 +6,7 @@ import type {
   TreeElement,
 } from '@garbee/tree/tree.js';
 
-const treeItemSelector = 'garbee-tree lit-virtualizer [role="treeitem"]';
+const treeItemSelector = 'garbee-tree [role="treeitem"]';
 const firstTreeItemSelector = `${treeItemSelector}:first-child`;
 
 test.beforeEach(async({page}) => {
@@ -55,15 +55,18 @@ test('fires when an item is deselected', async({page}) => {
 
 test('fires when multiple items are selected', async({page}) => {
   const tree = page.locator('garbee-tree');
-  const virtualizer = page.locator('garbee-tree lit-virtualizer');
 
-  await expect(virtualizer).toHaveAttribute('aria-multiselectable', 'false');
-
-  await tree.evaluate((treeElement: TreeElement) => {
-    treeElement.multiple = true;
+  await expect(tree).not.toHaveAttribute('aria-multiselectable', {
+    timeout: 50,
   });
 
-  await expect(virtualizer).toHaveAttribute('aria-multiselectable', 'true');
+  await tree.evaluate((treeElement: TreeElement) => {
+    treeElement.ariaMultiSelectable = 'true';
+  });
+
+  await expect(tree).toHaveAttribute('aria-multiselectable', 'true', {
+    timeout: 50,
+  });
 
   const firstItem = page.locator(firstTreeItemSelector);
   const lastItem = page.locator(treeItemSelector).last();

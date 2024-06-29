@@ -1,8 +1,8 @@
 import {test, expect} from '@playwright/test';
 
-const treeItemSelector = 'garbee-tree lit-virtualizer [role="treeitem"]';
-const notSelectedItemSelector = 'garbee-tree lit-virtualizer [role="treeitem"][aria-selected="false"]:first-child';
-const selectedItemSelector = 'garbee-tree lit-virtualizer [role="treeitem"][aria-selected="true"]:first-child';
+const treeItemSelector = 'garbee-tree [role="treeitem"]';
+const notSelectedItemSelector = 'garbee-tree [role="treeitem"][aria-selected="false"]:first-child';
+const selectedItemSelector = 'garbee-tree [role="treeitem"][aria-selected="true"]:first-child';
 const firstTreeItemSelector = `${treeItemSelector}:first-child`;
 
 test.beforeEach(async({page}) => {

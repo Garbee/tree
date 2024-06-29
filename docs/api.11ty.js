@@ -117,7 +117,9 @@ const get = (obj, path) => {
   }
 
   if (path === 'type.text') {
-    return obj === null || obj === '' ? fallback : obj.replaceAll('<', '&lt;').split('\n').map(item => item.trim()).join('');
+    return obj === null || obj === '' ?
+      fallback :
+      obj?.replaceAll('<', '&lt;').split('\n').map(item => item.trim()).join('');
   }
 
   return obj == null || obj === '' ? fallback : obj;

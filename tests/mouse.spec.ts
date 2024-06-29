@@ -1,6 +1,6 @@
 import {test, expect, type Locator} from '@playwright/test';
 
-const treeItemSelector = 'garbee-tree lit-virtualizer [role="treeitem"]';
+const treeItemSelector = 'garbee-tree [role="treeitem"]';
 const firstTreeItemSelector = `${treeItemSelector}:first-child`;
 
 test.beforeEach(async({page}) => {
@@ -15,7 +15,7 @@ test.beforeEach(async({page}) => {
 
 test('expansion', async({page}) => {
   const node = page.locator(firstTreeItemSelector);
-  const childNode = page.locator('garbee-tree lit-virtualizer [role="treeitem"]:nth-child(4)');
+  const childNode = page.locator('garbee-tree [role="treeitem"]:nth-child(4)');
 
   await test.step('opens a closed node on click', async() => {
     await expect(node).toHaveAttribute('aria-expanded', 'false');
@@ -95,7 +95,7 @@ test('tabindex moves with click', async({page}) => {
   await test.step('tabindex moves to node if at -1', async() => {
     await expect(firstItemNode).toHaveAttribute('tabindex', '0');
 
-    const childNode = page.locator('garbee-tree lit-virtualizer demo-content-item:nth-child(4)');
+    const childNode = page.locator('garbee-tree demo-content-item:nth-child(4)');
 
     await expect(childNode).toHaveAttribute('tabindex', '-1');
 

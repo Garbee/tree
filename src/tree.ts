@@ -13,11 +13,13 @@ import {
   batch,
 } from '@lit-labs/preact-signals';
 import type {
-  LitVirtualizer,
   VisibilityChangedEvent,
 } from '@lit-labs/virtualizer';
-import type {
-  RenderItemFunction,
+import {
+  virtualize,
+  virtualizerRef,
+  type RenderItemFunction,
+  type VirtualizerHostElement,
 } from '@lit-labs/virtualizer/virtualize.js';
 import {
   LitElement,
@@ -31,13 +33,8 @@ import {
   query,
 } from 'lit/decorators.js';
 import {
-  createRef,
-  ref,
-} from 'lit/directives/ref.js';
-import {
   findVisibleItems,
 } from './functions/find-visible-items.js';
-import '@lit-labs/virtualizer';
 
 /**
  * The TreeElement is what renders and manages the tree
@@ -47,16 +44,16 @@ import '@lit-labs/virtualizer';
  * which renders an element that extends the TreeItemElement
  * class.
  *
- * @part virtualizer - Applies styles to the
- * lit-virtualizer. Primarily used to adjust the height and
- * width of the scrollable area.
+ * @attr {'true' | 'false'} aria-multiselectable - Enable multiple selection by
+ * setting the value to `true`.
  *
  * @fires {ItemSelectionEvent} garbee-tree-item-selection-changed -
  * When item selection changes happen.
  */
 @customElement('garbee-tree')
 class TreeElement<TreeItemType = unknown>
-  extends signalWatcher(LitElement) {
+  extends signalWatcher(LitElement)
+  implements VirtualizerHostElement {
   /**
    * Determines if extra logging and performance marks
    * are enabled while operating.
@@ -94,16 +91,6 @@ class TreeElement<TreeItemType = unknown>
     this.#content.value = [...data];
   }
 
-  /**
-   * Enable selecting more than one item when set to `true`.
-   * Otherwise only a single tree item can be selected at a
-   * time.
-   */
-  @property({
-    type: Boolean,
-  })
-  public multiple = false;
-
   @query('[role="treeitem"][tabindex]:not([tabindex="-1"])')
   public currentFocusableItemNode!: HTMLElement | null;
 
@@ -118,6 +105,8 @@ class TreeElement<TreeItemType = unknown>
    * processed still.
    */
   #isHandlingKeydown = false;
+
+  readonly #internals = this.attachInternals();
 
   /**
    * The current start and end index of visible items
@@ -140,8 +129,10 @@ class TreeElement<TreeItemType = unknown>
    * Store a reference to the virtualizer node so it's API
    * can be accessed.
    */
-  readonly #virtualizerRef = createRef
-  <LitVirtualizer<TreeItem<TreeItemType>>>();
+  get #virtualizerRef():
+  VirtualizerHostElement[typeof virtualizerRef] {
+    return (this as VirtualizerHostElement)[virtualizerRef];
+  }
 
   /**
    * The subset of #content that is currently visible to
@@ -577,8 +568,10 @@ class TreeElement<TreeItemType = unknown>
     }
   };
 
-  private constructor() {
+  public constructor() {
     super();
+
+    this.#internals.role = 'tree';
   }
 
   /**
@@ -644,10 +637,11 @@ class TreeElement<TreeItemType = unknown>
 
     await this.updateComplete;
 
-    this.#virtualizerRef.value?.scrollToIndex(
+    this.#virtualizerRef?.element(
       this.#visibleContent.value.indexOf(first),
-      'nearest',
-    );
+    )?.scrollIntoView({
+      block: 'nearest',
+    });
 
     this.currentFocusableItemNode?.focus();
   }
@@ -664,10 +658,11 @@ class TreeElement<TreeItemType = unknown>
     this.#roveFocusTo(last.identifier);
     await this.updateComplete;
 
-    this.#virtualizerRef.value?.scrollToIndex(
+    this.#virtualizerRef?.element(
       this.#visibleContent.value.indexOf(last),
-      'nearest',
-    );
+    )?.scrollIntoView({
+      block: 'nearest',
+    });
 
     this.currentFocusableItemNode?.focus();
   }
@@ -763,10 +758,11 @@ class TreeElement<TreeItemType = unknown>
 
     await this.updateComplete;
 
-    this.#virtualizerRef.value?.scrollToIndex(
+    this.#virtualizerRef?.element(
       this.#visibleContent.value.indexOf(first),
-      'nearest',
-    );
+    )?.scrollIntoView({
+      block: 'nearest',
+    });
 
     this.currentFocusableItemNode?.focus();
   }
@@ -830,7 +826,7 @@ class TreeElement<TreeItemType = unknown>
     }
 
     batch(() => {
-      if (!this.multiple) {
+      if (this.ariaMultiSelectable === 'false') {
         const currentItem = this.#content
           .value
           .find((contentItem) => {
@@ -846,21 +842,52 @@ class TreeElement<TreeItemType = unknown>
     });
   }
 
+  public override connectedCallback(): void {
+    super.connectedCallback();
+
+    this.addEventListener(
+      'visibilityChanged',
+      this.#visibilityChanged,
+    );
+    this.addEventListener(
+      'click',
+      this.#clickHandler,
+    );
+    this.addEventListener(
+      'keydown',
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      this.#keyDownHandler,
+    );
+  }
+
+  public override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    this.removeEventListener(
+      'visibilityChanged',
+      this.#visibilityChanged,
+    );
+    this.removeEventListener(
+      'click',
+      this.#clickHandler,
+    );
+    this.removeEventListener(
+      'keydown',
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      this.#keyDownHandler,
+    );
+  }
+
+  protected override createRenderRoot(): HTMLElement {
+    return this;
+  }
+
   protected override render(): TemplateResult {
-    return html`
-      <lit-virtualizer
-      ${ref(this.#virtualizerRef)}
-        scroller
-        .items=${this.#visibleContent.value}
-        .renderItem="${this.renderItem}"
-        @visibilityChanged="${this.#visibilityChanged}"
-        @click="${this.#clickHandler}"
-        @keydown="${this.#keyDownHandler}"
-        part="virtualizer"
-        role="tree"
-        aria-multiselectable="${this.multiple}"
-      ></lit-virtualizer>
-    `;
+    const {renderItem} = this;
+    return html`${virtualize({
+      renderItem,
+      items: this.#visibleContent.value,
+    })}`;
   }
 }
 
