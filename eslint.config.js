@@ -2,7 +2,6 @@ import stylisticJsPlugin from '@stylistic/eslint-plugin-js';
 import stylisticTsPlugin from '@stylistic/eslint-plugin-ts';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import packageJson from 'eslint-plugin-package-json/configs/recommended';
 import {possibleProblems} from './etc/eslint/rules/possible-problems.js';
 import {suggestions} from './etc/eslint/rules/suggestions.js';
 import {javascriptStyle} from './etc/eslint/stylistic/javascript-style.js';
@@ -64,21 +63,6 @@ export default [
       'no-magic-numbers': ['off'],
       'id-length': ['off'],
       'max-lines': ['off'],
-    },
-  },
-  {
-    ...packageJson,
-    rules: {
-      ...packageJson.rules,
-      'package-json/sort-collections': [
-        'error',
-        [
-          'devDependencies',
-          'dependencies',
-          'peerDependencies',
-          'config',
-        ],
-      ],
     },
   },
   {
