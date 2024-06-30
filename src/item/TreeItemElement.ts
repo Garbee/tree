@@ -39,6 +39,8 @@ abstract class TreeItemElement<DataType = unknown>
   #treeItemEffectDisposal:
     ReturnType<typeof effect> | undefined = undefined;
 
+  protected internals = this.attachInternals();
+
   /**
    * Retrieve the data that this tree item represents.
    */
@@ -68,12 +70,14 @@ abstract class TreeItemElement<DataType = unknown>
     );
   }
 
+  public constructor() {
+    super();
+
+    this.internals.role = 'treeitem';
+  }
+
   public override connectedCallback(): void {
     super.connectedCallback();
-
-    if (!this.hasAttribute('role')) {
-      this.setAttribute('role', 'treeitem');
-    }
 
     if (this.#treeItem !== undefined) {
       this.#treeItemEffectDisposal = effect(

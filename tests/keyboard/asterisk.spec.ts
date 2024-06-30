@@ -6,7 +6,7 @@ import {
   expect,
 } from '@playwright/test';
 
-const treeItemSelector = 'garbee-tree [role="treeitem"]';
+const treeItemSelector = ' garbee-tree demo-content-item';
 const firstTreeItemSelector = `${treeItemSelector}:first-child`;
 
 test.beforeEach(async({page}) => {

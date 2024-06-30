@@ -95,7 +95,7 @@ test.describe('TreeItem', () => {
           hasChildren: true,
         });
 
-        item.collapse();
+        item.close();
 
         expect(item.expanded.value).toStrictEqual(false);
       });
@@ -109,7 +109,7 @@ test.describe('TreeItem', () => {
           expanded: false,
         });
 
-        item.expand();
+        item.open();
 
         expect(item.expanded.value).toStrictEqual(true);
       });
@@ -146,11 +146,11 @@ test.describe('TreeItem', () => {
 
         expect(item.expanded.value).toBeUndefined();
 
-        item.expand();
+        item.open();
 
         expect(item.expanded.value).toBeUndefined();
 
-        item.collapse();
+        item.close();
 
         expect(item.expanded.value).toBeUndefined();
 

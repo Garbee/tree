@@ -91,7 +91,7 @@ class TreeElement<TreeItemType = unknown>
     this.#content.value = [...data];
   }
 
-  @query('[role="treeitem"][tabindex]:not([tabindex="-1"])')
+  @query(':scope > [tabindex]:not([tabindex="-1"])')
   public currentFocusableItemNode!: HTMLElement | null;
 
   /**
@@ -683,7 +683,7 @@ class TreeElement<TreeItemType = unknown>
         continue;
       }
 
-      item.expand();
+      item.open();
     }
   }
 
@@ -742,7 +742,7 @@ class TreeElement<TreeItemType = unknown>
     }
 
     if (!current.expanded.value) {
-      current.expand();
+      current.open();
       return;
     }
 
@@ -780,7 +780,7 @@ class TreeElement<TreeItemType = unknown>
     }
 
     if (current.expanded.value === true) {
-      current.collapse();
+      current.close();
       return;
     }
 
@@ -826,14 +826,14 @@ class TreeElement<TreeItemType = unknown>
     }
 
     batch(() => {
-      if (this.ariaMultiSelectable === 'false') {
+      if (['false', null].includes(this.ariaMultiSelectable)) {
         const currentItem = this.#content
           .value
           .find((contentItem) => {
             return contentItem.selected.value;
           });
 
-        if (item.identifier !== currentItem?.identifier) {
+        if (currentItem?.identifier !== item.identifier) {
           currentItem?.deselect();
         }
       }

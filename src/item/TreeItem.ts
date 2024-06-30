@@ -183,7 +183,7 @@ class TreeItem<DataType = unknown> {
    * If the item has children, show them. Otherwise, do
    * nothing.
    */
-  public expand(): void {
+  public open(): void {
     if (!this.#hasChildren) {
       return;
     }
@@ -195,7 +195,7 @@ class TreeItem<DataType = unknown> {
    * If the item has children, hide them. Otherwise, do
    * nothing.
    */
-  public collapse(): void {
+  public close(): void {
     if (!this.#hasChildren) {
       return;
     }
