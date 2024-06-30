@@ -4,17 +4,19 @@ import {TreeItem} from '@garbee/tree/tree-item.js';
  * Interface for anything that needs to be flattened.
  */
 export interface CanHaveChildren<T = unknown> {
+  id?: string;
   children?: Array<T>;
 }
 
 /**
  * A helper function to take a nested set of data elements
- * and flatten them down into a single tree.
+ * and flatten them down into a single tree. This requires
+ * that children be in a property called `children`. It also
+ * looks for existing identifiers on `id` if present to use.
  *
- * Only provide the <b>first</b> argument when using this
- * function. The rest are for internal use only as this
- * works recursively.
- *
+ * Should either of these be an issue, copy the source and
+ * modify to your needs. Pull requests welcome to make this
+ * function more configurable while still being type-safe.
  *
  * @argument source {Array<SourceType>} The nested data that
  * needs to be flattened.
@@ -24,43 +26,70 @@ export interface CanHaveChildren<T = unknown> {
  * keep track of their position within the tree along with
  * the parent, if any, they are associated with.
  */
-/* eslint max-lines-per-function: ['error', {max: 40}], @typescript-eslint/max-params: ['error', {max: 4}] */
-export function flatten<
-  SourceType extends CanHaveChildren,
->(
+/* eslint max-lines-per-function: ['error', {max: 70}] */
+export function flatten
+<SourceType extends CanHaveChildren>(
   source: Array<SourceType>,
-  level = 1,
-  parent?: TreeItem<SourceType>,
-  finalData: Array<
-    TreeItem<
-      Omit<SourceType, keyof CanHaveChildren>>> = [],
-): Array<
-    TreeItem<Omit<SourceType, keyof CanHaveChildren>>> {
-  for (const data of source) {
-    const item = new TreeItem<
-      Omit<SourceType, keyof CanHaveChildren>>(
-      data,
+): Array<TreeItem<SourceType>> {
+  interface PendingItem {
+    node: SourceType;
+    level: number;
+    siblingCount: number;
+    inset: number;
+    parent?: TreeItem<SourceType>;
+  }
+
+  const result: Array<TreeItem<SourceType>> = [];
+  const stack: Array<PendingItem> = [];
+
+  for (const node of source.toReversed()) {
+    stack.push({
+      node,
+      level: 1,
+      siblingCount: source.length,
+      inset: source.indexOf(node) + 1,
+    });
+  }
+
+  while (stack.length > 0) {
+    const {
+      node,
+      level,
+      siblingCount,
+      inset,
+      parent,
+    } = stack.pop()!;
+
+    const children = node.children ?? [];
+
+    const item = new TreeItem(
+      node,
       {
         level,
-        size: source.length,
-        inset: source.indexOf(data) + 1,
+        inset,
+        size: siblingCount,
         expanded: false,
-        hasChildren: Boolean(data.children?.length ?? 0),
+        hasChildren: children.length > 0,
       },
       parent,
+      node.id ?? `item-${crypto.randomUUID()}`,
     );
 
-    finalData.push(item);
+    result.push(item);
 
-    if (data.children) {
-      flatten(
-        data.children as Array<SourceType>,
-        level + 1,
-        item,
-        finalData,
-      );
+    for (
+      const child of
+      children.toReversed() as Array<SourceType>
+    ) {
+      stack.push({
+        node: child,
+        parent: item,
+        inset: children.indexOf(child) + 1,
+        siblingCount: children.length,
+        level: level + 1,
+      });
     }
   }
 
-  return finalData;
+  return result;
 }
