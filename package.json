@@ -43,6 +43,8 @@
     "package.json",
     "package-lock.json",
     "readme.md",
+    "LICENSE",
+    "SECURITY.md",
     "man/"
   ],
   "scripts": {
@@ -81,6 +83,7 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0-alpha.14",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "@changesets/cli": "^2.27.6",
     "@custom-elements-manifest/analyzer": "^0.10.2",
     "@eslint/js": "^9.6.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
