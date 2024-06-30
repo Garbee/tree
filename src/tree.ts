@@ -32,6 +32,9 @@ import {
   property,
   query,
 } from 'lit/decorators.js';
+import type {
+  KeyFn,
+} from 'lit/directives/repeat.js';
 import {
   findVisibleItems,
 } from './functions/find-visible-items.js';
@@ -66,6 +69,18 @@ class TreeElement<TreeItemType = unknown>
       overflow: auto;
     }
   `;
+
+  /**
+   * Override the key function used by the repeater when
+   * rendering tree item elements.
+   */
+  @property({
+    attribute: false,
+  })
+  public keyFunction: KeyFn<TreeItem<TreeItemType>> =
+    (item: TreeItem): string => {
+      return item.identifier;
+    };
 
   /**
    * The function passed to <code>lit-virtualizer</code>
@@ -887,10 +902,16 @@ class TreeElement<TreeItemType = unknown>
   }
 
   protected override render(): TemplateResult {
-    const {renderItem} = this;
+    const {
+      renderItem,
+      keyFunction,
+    } = this;
+
     return html`${virtualize({
       renderItem,
+      keyFunction,
       items: this.#visibleContent.value,
+      scroller: true,
     })}`;
   }
 }
