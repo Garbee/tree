@@ -1,0 +1,17 @@
+name: Commit to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  eslint:
+    name: ESLint
+    uses: ./.github/workflows/eslint.yml
+    permissions:
+      contents: read
+      security-events: write
+  test:
+    name: Test
+    uses: ./.github/workflows/playwright.yml
