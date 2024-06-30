@@ -1,13 +1,15 @@
 ---
 layout: example.11ty.js
-title: <garbee-tree> ⌲ Examples ⌲ Basic
+title: <garbee-tree> ⌲ Examples ⌲ Multiple Select
 tags: example
-name: Basic
-description: A basic example
+name: Multiselect
+description: Multiple select of tree items
 ---
 
-<garbee-tree>
+
+<garbee-tree aria-multiselectable="true">
 </garbee-tree>
+
 
 <script type="module">
   const {TreeElement} = await import('/dist/src/tree.js');
@@ -34,7 +36,7 @@ description: A basic example
 <h3>HTML</h3>
 
 ```html
-<garbee-tree>
+<garbee-tree aria-multiselectable="true">
 </garbee-tree>
 ```
 
