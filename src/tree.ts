@@ -92,7 +92,8 @@ class TreeElement<TreeItemType = unknown>
   }
 
   @query(':scope > [tabindex]:not([tabindex="-1"])')
-  public currentFocusableItemNode!: HTMLElement | null;
+  private readonly currentFocusableItemNode!:
+    HTMLElement | null;
 
   /**
    * Internal state to determine if a click event is being
@@ -571,6 +572,9 @@ class TreeElement<TreeItemType = unknown>
   public constructor() {
     super();
 
+    /**
+     * @internal
+     */
     this.#internals.role = 'tree';
   }
 

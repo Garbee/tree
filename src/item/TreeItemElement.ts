@@ -18,9 +18,7 @@ import {
  * should extend in order to create an element to show
  * the item to a user.
  *
- * This will set the <code>role</code> to
- * <code>treeitem</code> automatically. As well as
- * maintaining all needed exposure to assistive
+ * This maintains all needed exposure to assistive
  * technology as the TreeItem's signals change.
  */
 abstract class TreeItemElement<DataType = unknown>
@@ -39,7 +37,12 @@ abstract class TreeItemElement<DataType = unknown>
   #treeItemEffectDisposal:
     ReturnType<typeof effect> | undefined = undefined;
 
-  protected internals = this.attachInternals();
+  /**
+   * The internals of the element for setting base aria
+   * requirements.
+   */
+  protected internals: ElementInternals =
+    this.attachInternals();
 
   /**
    * Retrieve the data that this tree item represents.
@@ -73,6 +76,9 @@ abstract class TreeItemElement<DataType = unknown>
   public constructor() {
     super();
 
+    /**
+     * @internal
+     */
     this.internals.role = 'treeitem';
   }
 
