@@ -1,0 +1,22 @@
+name: Build Package
+
+on:
+  workflow_call:
+
+jobs:
+  build-package:
+    name: Building Package
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install Deps
+        run: npm ci
+      - name: Build Docs
+        run: npm run build

@@ -6,6 +6,9 @@ on:
       - main
 
 jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
   eslint:
     name: ESLint
     uses: ./.github/workflows/eslint.yml
@@ -15,9 +18,14 @@ jobs:
   test:
     name: Test
     uses: ./.github/workflows/playwright.yml
+  general-lint:
+    name: General Linting
+    uses: ./.github/workflows/general-lint.yml
   build-docs:
     name: Build Docs
     uses: ./.github/workflows/docs-build.yml
     needs:
       - eslint
       - test
+      - build
+      - general-lint
