@@ -15,3 +15,9 @@ jobs:
   test:
     name: Test
     uses: ./.github/workflows/playwright.yml
+  build-docs:
+    name: Build Docs
+    uses: ./.github/workflows/docs-build.yml
+    needs:
+      - eslint
+      - test
