@@ -20,10 +20,8 @@ jobs:
         run: npm ci
       - name: Build Docs
         run: npm run docs:gen
-      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
-          name: Docs
-          path: man/
-          if-no-files-found: error
+          path: ./man
           retention-days: 7
-          compression-level: 9

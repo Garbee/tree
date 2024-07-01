@@ -29,3 +29,11 @@ jobs:
       - test
       - build
       - general-lint
+  deploy-docs:
+    name: Deploy Docs
+    uses: ./.github/workflows/docs-deploy.yml
+    permissions:
+      pages: write
+      id-token: write
+    needs:
+      - build-docs
