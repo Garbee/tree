@@ -9,7 +9,7 @@ description: A basic example
 <garbee-tree>
 </garbee-tree>
 
-<script type="module" src="/assets/basic-example.js"></script>
+<script type="module" src="/assets/basic-example.bundled.js"></script>
 
 
 <h3>HTML</h3>

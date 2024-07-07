@@ -1,8 +1,9 @@
-const {TreeElement} = await import('@garbee/tree/tree.js');
-const {directoryStructure} = await import('../../dist/data/sample-directory.js');
-const {flatten} = await import('@garbee/tree/functions/flatten.js');
-const {ContentItem} = await import('../../dist/demo/content-item.js');
-const {html} = await import('lit');
+import {TreeElement} from '@garbee/tree/tree.js';
+import {directoryStructure} from '../../dist/data/sample-directory.js';
+import {flatten} from '@garbee/tree/functions/flatten.js';
+import {ContentItem} from '../../dist/demo/content-item.js';
+import {html} from 'lit';
+
 const treeNode = document.querySelector('garbee-tree');
 
 TreeElement.debugMode = true;
