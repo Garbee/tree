@@ -44,8 +44,7 @@
     "package-lock.json",
     "readme.md",
     "LICENSE",
-    "SECURITY.md",
-    "man/"
+    "SECURITY.md"
   ],
   "scripts": {
     "analyze": "cem analyze --litelement --globs \"src/**/*.ts\"",
@@ -75,7 +74,8 @@
     "pretest:server": "run-s -l build:test",
     "test:copy:build": "cpy dist tests/srv/assets/",
     "test:server": "wds --config=etc/web-dev-server/test.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prepack": "run-s -l clean build analyze"
   },
   "dependencies": {
     "@lit-labs/preact-signals": "^1.0.2",

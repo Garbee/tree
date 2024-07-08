@@ -1,6 +1,9 @@
 custom-elements.json
 eslint-results.sarif
 
+# Folder where testing npm pack extracts to
+package/
+
 # Built doc site from 11ty for distribution.
 man/
 # Built assets for testing
