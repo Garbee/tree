@@ -37,3 +37,13 @@ jobs:
       id-token: write
     needs:
       - build-docs
+  release-package:
+    name: Release Package
+    uses: ./.github/workflows/release.yml
+    permissions:
+      contents: write
+      pull-requests: write
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    needs:
+      - build-docs

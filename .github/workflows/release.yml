@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    permissions:
+      contents: write  # for Git to git push
+      pull-requests: write # to allow creating PR
+    # Don't run on forks.
+    if: github.repository == 'garbee/tree'
+    environment:
+      name: github-pages
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set git config
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+      - name: Checkout Repo
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Create Release Pull Request
+        # The id of this step must not be "changesets", or else the step will be invisible
+        # in the list of steps from the GitHub UI when the action runs (though it will still
+        # run, and its output will appear in the raw logs). Unknown why this is the case,
+        # see https://github.com/changesets/action/issues/149 for discussion.
+        id: cs
+        uses: changesets/action@aba318e9165b45b7948c60273e0b72fce0a64eb9 # v1.4.7
+        with:
+          setupGitUser: false
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HUSKY: 0

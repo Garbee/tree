@@ -25,5 +25,6 @@
   "eslint.run": "onSave",
   "eslint.useESLintClass": true,
   "eslint.useFlatConfig": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.fontFamily": "'PragmataPro Liga', Menlo, Monaco, 'Courier New', monospace"
 }
